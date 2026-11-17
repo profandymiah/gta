@@ -75,6 +75,46 @@ p{font-size:clamp(15px,1.35vw,19px);line-height:1.55;max-width:70ch;color:#e6e2d
 .hero .bgtoggle{background:rgba(0,0,0,.5);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:4px 8px;font:11px var(--mono);cursor:pointer;margin-left:8px}
 .hero .byline{font:600 13px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin:26px 0 0;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);max-width:max-content}
 .hero .byline b{color:var(--b)}
+
+/* how it plays */
+.play{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:stretch}
+@media(max-width:960px){.play{grid-template-columns:1fr}}
+.screen{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);min-height:360px;
+  background:radial-gradient(600px 300px at 70% 0%,color-mix(in srgb,var(--a) 35%,transparent),transparent 70%),linear-gradient(180deg,#1b1530,#0d0d14)}
+.screen svg{position:absolute;inset:0;width:100%;height:100%}
+.hud-mm{position:absolute;left:14px;bottom:14px;width:110px;height:110px;border-radius:50%;border:3px solid rgba(255,255,255,.7);background:#0f2a2a;overflow:hidden}
+.hud-top{position:absolute;right:14px;top:12px;text-align:right;font-family:var(--display);letter-spacing:.02em}
+.hud-top .cash{font-size:28px;color:#7bd389;text-shadow:0 2px 0 #000}
+.hud-top .stars{font-size:26px;letter-spacing:4px;color:rgba(255,255,255,.18);text-shadow:0 2px 0 #000}
+.hud-top .stars b{color:#ffd23f;font-weight:400}
+.hud-bars{position:absolute;left:132px;bottom:18px;display:flex;flex-direction:column;gap:6px;width:140px}
+.hud-bars i{display:block;height:7px;border-radius:4px;background:#7bd389}.hud-bars i+i{background:#62a0ea}
+.hud-radio{position:absolute;left:50%;top:14px;transform:translateX(-50%);font:600 13px var(--mono);background:rgba(0,0,0,.55);padding:6px 12px;border-radius:8px;opacity:0;transition:opacity .3s;white-space:nowrap}
+.hud-radio.on{opacity:1}
+.hud-sub{position:absolute;left:50%;bottom:132px;background:rgba(0,0,0,.45);border-radius:8px;padding:4px 10px;transform:translateX(-50%);width:min(80%,520px);text-align:center;font-size:15px;line-height:1.4;color:#fff;text-shadow:0 2px 4px #000}
+.hud-sub:empty{display:none}
+.hud-sub b{color:var(--b)}
+.scene-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.scene-nav button{font:600 11px var(--mono);letter-spacing:.06em;padding:6px 10px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--mute);cursor:pointer}
+.scene-nav button.on{background:var(--a);color:#000;border-color:var(--a)}
+.scene h3{font-family:var(--display);font-weight:400;font-size:clamp(26px,2.6vw,38px);text-transform:uppercase;margin:0 0 8px}
+.scene p{font-size:16px}
+.scene .act{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 6px}
+.scene .act button{background:rgba(255,255,255,.08);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:9px 14px;font:600 13px var(--body);cursor:pointer}
+.scene .act button:hover{background:var(--a);color:#000}
+.scene .why{font-size:13px;color:var(--mute);border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.scene-step{display:flex;gap:10px;margin-top:14px}
+.scene-step button{background:var(--ink);color:#000;border:0;border-radius:10px;padding:10px 16px;font:700 13px var(--body);cursor:pointer}
+.scene-step button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+/* scholars */
+.q-grid{columns:3 300px;column-gap:16px}
+.q{break-inside:avoid;margin:0 0 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:32px 18px 14px;position:relative}
+.q blockquote{margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:1.4;color:#fff}
+.q blockquote:before{content:"\201C";font-size:46px;line-height:0;vertical-align:-18px;color:var(--a);margin-right:4px}
+.q .who{font:600 12px var(--mono);color:var(--b)}
+.q .pub{font-size:12px;color:var(--mute);margin-top:2px}
+.q .so{font-size:13px;color:#d8d4cc;margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.q .th{position:absolute;top:12px;right:12px;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
 /* chrome */
 #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;
   background:linear-gradient(transparent,rgba(0,0,0,.7) 40%)}
@@ -224,9 +264,48 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
     <div class="card"><h3>6 · Labour, leaks &amp; power</h3><p>Crunch, hacks, and the 2025–26 union dispute.</p></div>
     <div class="card"><h3>7 · Leonida (GTA VI)</h3><p>Delays, trailers, $80, and the launch week.</p></div>
     <div class="card"><h3>+ Timeline, atlas &amp; gameplay archive</h3><p>Filter 49 events, explore every setting, and watch gameplay from all 16 editions.</p></div>
+    <div class="card"><h3>+ New to GTA?</h3><p>Slide 4 walks you through how the games actually play, scene by scene.</p></div>
     <div class="card"><h3>+ Ten insights &amp; reading list</h3><p>Takeaways and sources for teaching, talks and research.</p></div>
   </div>
   <p class="mute" style="margin-top:16px">Use ← → or swipe. Press <b>M</b> or the ☰ button for the chapter menu. Every slide has its own link.</p>
+</section>
+
+
+<!-- HOW IT PLAYS -->
+<section class="slide era-ls" data-chapter="Start" data-title="How GTA plays (for non-players)">
+  <p class="kicker">Never played? Start here</p>
+  <h2>Ten minutes inside a GTA game</h2>
+  <div class="play">
+    <div class="screen" id="scr" aria-live="polite">
+      <svg viewBox="0 0 600 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7aa8" stop-opacity=".55"/><stop offset=".6" stop-color="#ffb347" stop-opacity=".25"/><stop offset="1" stop-color="#0d0d14" stop-opacity="0"/></linearGradient></defs>
+        <rect width="600" height="230" fill="url(#sky)"/>
+        <circle cx="470" cy="150" r="46" fill="#ffd28a" opacity=".55"/>
+        <g fill="#14101f" id="skyline">
+          <rect x="30" y="120" width="42" height="140"/><rect x="80" y="90" width="30" height="170"/><rect x="118" y="140" width="50" height="120"/>
+          <rect x="176" y="70" width="36" height="190"/><rect x="220" y="110" width="44" height="150"/><rect x="380" y="100" width="40" height="160"/>
+          <rect x="428" y="130" width="54" height="130"/><rect x="490" y="80" width="34" height="180"/><rect x="530" y="120" width="50" height="140"/>
+        </g>
+        <g stroke="#14101f" stroke-width="5" fill="none"><path d="M300 260 q4 -60 0 -90"/><path d="M300 175 q-30 -10 -45 6 M300 175 q30 -12 46 4 M300 175 q-10 -26 -34 -30 M300 175 q14 -26 36 -28"/></g>
+        <rect y="258" width="600" height="122" fill="#1a1a24"/>
+        <g fill="#ffd23f" opacity=".7"><rect x="20" y="318" width="40" height="5"/><rect x="110" y="318" width="40" height="5"/><rect x="200" y="318" width="40" height="5"/><rect x="290" y="318" width="40" height="5"/><rect x="380" y="318" width="40" height="5"/><rect x="470" y="318" width="40" height="5"/><rect x="560" y="318" width="40" height="5"/></g>
+        <g id="car" transform="translate(150 286)"><rect x="0" y="0" width="92" height="26" rx="8" fill="#ff3d8b"/><rect x="18" y="-14" width="52" height="18" rx="6" fill="#ff3d8b"/><rect x="24" y="-10" width="18" height="12" rx="2" fill="#9fd8ff" opacity=".7"/><rect x="46" y="-10" width="18" height="12" rx="2" fill="#9fd8ff" opacity=".7"/><circle cx="20" cy="26" r="9" fill="#000"/><circle cx="72" cy="26" r="9" fill="#000"/></g>
+        <g id="player" transform="translate(110 262)"><circle cx="0" cy="0" r="8" fill="#f4f1ea"/><rect x="-7" y="8" width="14" height="22" rx="4" fill="#19d3c5"/><rect x="-6" y="30" width="5" height="16" fill="#f4f1ea"/><rect x="1" y="30" width="5" height="16" fill="#f4f1ea"/></g>
+        <g id="cops" opacity="0"><g transform="translate(470 290)"><rect width="90" height="24" rx="8" fill="#f4f1ea"/><rect x="0" y="10" width="90" height="6" fill="#111"/><rect x="34" y="-10" width="22" height="8" rx="2" fill="#ff4545" id="siren"/></g></g>
+        <g id="marker" opacity="0"><circle cx="520" cy="250" r="12" fill="#ffd23f"/><path d="M520 268 l-10 -14 h20z" fill="#ffd23f"/></g>
+      </svg>
+      <div class="hud-top"><div class="cash" id="hudCash">$500</div><div class="stars" id="hudStars">★★★★★</div></div>
+      <div class="hud-radio" id="hudRadio"></div>
+      <div class="hud-mm"><svg viewBox="0 0 100 100" style="position:absolute;inset:0"><path d="M0 60 H100 M40 0 V100 M70 0 V100" stroke="#2f5d5d" stroke-width="6"/><circle cx="50" cy="50" r="5" fill="#fff"/><circle id="mmDot" cx="80" cy="25" r="5" fill="#ffd23f" opacity="0"/></svg></div>
+      <div class="hud-bars"><i id="hp" style="width:100%"></i><i style="width:80%"></i></div>
+      <div class="hud-sub" id="hudSub"></div>
+    </div>
+    <div class="scene">
+      <div class="scene-nav" id="scNav"></div>
+      <div id="scBody"></div>
+      <div class="scene-step"><button class="ghost" id="scPrev">← Back</button><button id="scNext">Next scene →</button></div>
+    </div>
+  </div>
 </section>
 
 <!-- 3 TIMELINE -->
@@ -393,6 +472,17 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
     <div class="flip"><div class="in"><div class="f"><h3>Media &amp; drama</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>The BBC drama <i>The Gamechangers</i> (2015) dramatised Rockstar's battle with Jack Thompson; Rockstar sued the BBC over it, which shows how tightly the company controls its own story.</p></div></div></div>
   </div>
   <div class="insight"><b>Insight</b><span>A game built to satirise reality became a <i>proxy</i> for reality in AI research. Synthetic worlds as training data is a GTA-era idea now central to machine learning.</span></div>
+</section>
+
+
+<!-- SCHOLARS -->
+<section class="slide era-sa" data-chapter="5 · Research instrument" data-title="What the scholars say">
+  <p class="kicker">Chapter 5 · Voices from the literature</p>
+  <h2>What the scholars say</h2>
+  <p>Key lines from peer-reviewed studies and academic books on GTA, found via Google Scholar and checked against the published abstracts or full texts. Filter by theme; each card links to the source.</p>
+  <div class="gp-filters" id="qf"></div>
+  <div class="q-grid" id="qg"></div>
+  <p class="src">Quotations are short extracts for criticism and review, attributed to their authors; follow the links for full context. Also worth reading (no extract here): Barrett (2006) on race and neoliberal fantasy in San Andreas; Miller (2007, 2008) on radio, race and place, and on GTA as digital folklore; Dashiell &amp; Phelps (2023) on gendered reactions to GTA VI's female lead.</p>
 </section>
 
 <!-- CH6 LABOUR -->
@@ -792,6 +882,60 @@ let cmpLoaded=false;
  const stop=()=>{bg.innerHTML='';on=false;t.textContent='play'};
  t.onclick=e=>{e.stopPropagation();on?stop():play()};
  reduce?stop():play();})();
+
+
+// HOW IT PLAYS
+const SC=[
+ {k:'Arrive',t:'You arrive in a living city',p:'There is no level to start and no corridor to follow. You appear on a street in a huge fictional city, a satirical copy of a real American place. Cars, pedestrians, weather and day-night cycles run whether or not you do anything.',a:[['Look around',()=>sub('Pedestrians chat on phones. A bus pulls away. <b>Nothing is waiting for you.</b>')]],w:'Why it matters: GTA III (2001) made this "simulated public" the core of the open-world genre.',run:()=>{place(110,150);hide('cops');hide('marker');stars(0);radio('')}},
+ {k:'The phone rings',t:'A mission is offered, not forced',p:'Your character\'s phone buzzes: a contact has a job. A marker appears on the mini-map. You can go now, later, or never. Story missions move the plot along, and everything between them is yours.',a:[['Accept the job',()=>{show('marker');mm(1);sub('Marker set. <b>Drive to the yellow blip.</b>')}],['Ignore it',()=>{hide('marker');mm(0);sub('The city carries on. <b>Free roam</b> is half the game.')}]],w:'Design idea: an "optional spine". The story is a thread through a sandbox, not a track.',run:()=>{place(110,150);hide('cops');stars(0);sub('📱 Incoming call…')}},
+ {k:'Take a car',t:'Every vehicle is yours to take',p:'The series is named after the crime. Walk up to almost any car, pull the driver out, and drive. You can also walk, swim, cycle, fly and sail. The controls are the same tools whether you are on a mission or messing around.',a:[['Take the car',()=>{carIn();cash(0);sub('You\'re driving. <b>The verb set:</b> walk · drive · shoot · swim · fly.')}]],w:'Why it matters: a small set of consistent verbs plus a big city gives players freedom of method.',run:()=>{place(110,150);hide('cops');stars(0)}},
+ {k:'Turn on the radio',t:'The radio is half the satire',p:'Every car has a radio. Music stations play licensed songs; talk stations and adverts mock American politics, consumerism and celebrity. Most of GTA\'s commentary reaches players this way.',a:[['Rock',()=>radio('📻 Los Santos Rock Radio · classic rock')],['Pop',()=>radio('📻 Non-Stop-Pop FM · chart pop')],['Hip-hop',()=>radio('📻 Radio Los Santos · West Coast hip-hop')],['Talk',()=>radio('📻 West Coast Talk Radio · parody phone-ins & ads')]],w:'Research lens: scholars (e.g. Miller, 2007) treat GTA radio as a key site of race, place and parody.',run:()=>{carIn();hide('cops');stars(0);sub('Pick a station.')}},
+ {k:'The wanted level',t:'Break the law and the city responds',p:'Crime raises your wanted level, shown as stars. One star brings a patrol; five bring helicopters and roadblocks. Escape the search area and the stars fade. It is the game\'s main feedback loop for misbehaviour.',a:[['Run a red light',()=>addStar(1)],['Ram a police car',()=>addStar(2)],['Hide in an alley',()=>{stars(0);hide('cops');sub('Search area lost. <b>Stars clear.</b>')}]],w:'Design idea: consequences without moralising. The system pushes back but never stops you.',run:()=>{carIn();stars(0);sub('Try something…')}},
+ {k:'Do the job',t:'Missions: heists, chases, set-pieces',p:'Missions are scripted scenes: a chase, a robbery, a getaway, often with cutscenes and dialogue. Pass and you earn money and unlock new areas and characters. Fail and you retry, with the story waiting for you.',a:[['Finish the heist',()=>{cash(25000);mm(0);hide('marker');sub('Mission passed. <b>+$25,000</b> · new contacts unlocked.')}],['Get "Wasted"',()=>{hp(0);sub('<b style="color:#ff4545">WASTED</b> · you wake at the hospital, minus some cash.');setTimeout(()=>hp(100),1600)}]],w:'Vocabulary: "Wasted" (killed) and "Busted" (arrested) are the series\' famous fail screens.',run:()=>{carIn();show('marker');mm(1);stars(0)}},
+ {k:'Spend & choose',t:'Money, property and choices',p:'Cash buys guns, clothes, cars, haircuts and businesses. Later games add choices: GTA IV and GTA V end with decisions that change who lives. GTA V lets you switch between three protagonists at any time.',a:[['Buy a garage',()=>{cash(-10000);sub('Property bought. <b>Passive income</b> starts.')}],['Switch character',()=>sub('Camera swoops out over the city… <b>now playing as someone else.</b>')]],w:'Why it matters: progression gives the sandbox goals without taking away freedom.',run:()=>{place(110,150);hide('cops');stars(0)}},
+ {k:'Go online',t:'GTA Online: the city with other people',p:'Since 2013, GTA V has had an online mode where players share the city: heists in crews, races, businesses, and roleplay servers where people improvise characters for hours. This is the part that has run for 13 years.',a:[['Join a crew',()=>sub('4 players · heist setup · <b>split the take</b>.')],['Roleplay',()=>sub('You\'re a taxi driver on an RP server. <b>No missions, only people.</b>')]],w:'Why it matters: GTA became a platform and a social space as well as a story.',run:()=>{place(110,150);hide('cops');stars(0);sub('Connecting to session…')}}
+];
+let sci=0,$cash=500,$stars=0;
+const q=id=>document.getElementById(id);
+function sub(h){q('hudSub').innerHTML=h}
+function show(id){q(id).style.opacity=1} function hide(id){q(id).style.opacity=0}
+function place(x){q('player').style.display='';q('player').setAttribute('transform',`translate(${x} 262)`);q('car').setAttribute('transform','translate(150 286)')}
+function carIn(){q('player').style.display='none';q('car').setAttribute('transform','translate(260 286)')}
+function mm(on){q('mmDot').style.opacity=on?1:0}
+function stars(n){$stars=Math.max(0,Math.min(5,n));q('hudStars').innerHTML='<b>'+'★'.repeat($stars)+'</b>'+'★'.repeat(5-$stars)}
+function addStar(n){stars($stars+n);show('cops');sub($stars>=4?'Helicopters overhead. <b>Roadblocks ahead.</b>':'Sirens. <b>Lose them</b> or keep running.')}
+function cash(d){$cash+=d;q('hudCash').textContent='$'+$cash.toLocaleString()}
+function hp(v){q('hp').style.width=v+'%'}
+function radio(t){const r=q('hudRadio');r.textContent=t;r.classList.toggle('on',!!t);if(t)sub('Station changed.')}
+function scene(i){sci=(i+SC.length)%SC.length;const c=SC[sci];
+  q('scNav').innerHTML=SC.map((x,j)=>`<button class="${j===sci?'on':''}" data-j="${j}">${j+1}. ${x.k}</button>`).join('');
+  q('scNav').querySelectorAll('button').forEach(b=>b.onclick=()=>scene(+b.dataset.j));
+  q('scBody').innerHTML=`<p class="kicker" style="margin-bottom:6px">Scene ${sci+1} of ${SC.length}</p><h3>${c.t}</h3><p>${c.p}</p><div class="act">${c.a.map((a,j)=>`<button data-a="${j}">${a[0]}</button>`).join('')}</div><p class="why">${c.w}</p>`;
+  q('scBody').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>c.a[+b.dataset.a][1]());
+  sub('');radio('');c.run();q('scNext').textContent=sci===SC.length-1?'Start again ↺':'Next scene →'}
+q('scPrev').onclick=()=>scene(sci-1);q('scNext').onclick=()=>scene(sci+1);
+stars(0);scene(0);
+setInterval(()=>{const s=q('siren');if(s)s.setAttribute('fill',s.getAttribute('fill')==='#ff4545'?'#62a0ea':'#ff4545')},400);
+
+// SCHOLARS
+const QT={effects:'Effects & players',race:'Race & representation',place:'Satire & place',regulation:'Regulation',ai:'AI & simulation'};
+const QS=[
+ {th:'effects',q:'they do not passively receive the games’ images and content',w:'DeVane & Squire (2008)',pub:'"The meaning of race and violence in Grand Theft Auto: San Andreas", Games and Culture',u:'https://doi.org/10.1177/1555412008317308',so:'Studying young players in natural settings, they found that players read GTA through their own lives and knowledge.'},
+ {th:'effects',q:'a more realistic scientific perspective on the effects of violent video gaming',w:'Kühn et al. (2018)',pub:'"Does playing violent video games cause aggression?", Molecular Psychiatry',u:'https://doi.org/10.1038/s41380-018-0031-7',so:'Two months of daily GTA V play: no measurable rise in aggression or fall in empathy.'},
+ {th:'effects',q:'they suggest a small increase in proviolence attitudes',w:'Teng et al. (2011)',pub:'"Grand Theft Auto IV comes to Singapore", Cyberpsychology, Behavior, and Social Networking',u:'https://doi.org/10.1089/cyber.2010.0115',so:'Twelve hours of GTA IV over three weeks did not raise aggression or reduce empathy. The small shift in attitudes is a useful caveat.'},
+ {th:'effects',q:'longitudinal research is rare',w:'Coyne & Stockdale (2021)',pub:'"Growing up with Grand Theft Auto: A 10-year study…", Cyberpsychology, Behavior, and Social Networking',u:'https://doi.org/10.1089/cyber.2020.0049',so:'Tracking adolescents for a decade, they found three distinct patterns of violent-game play rather than one trajectory.'},
+ {th:'race',q:'primary comedic weapon in addressing these issues is parody',w:'Annandale (2006)',pub:'"The Subversive Carnival of Grand Theft Auto: San Andreas", in Garrelts (ed.), The Meaning and Culture of GTA',u:'https://scholar.google.com/scholar?q=%22The+Subversive+Carnival+of+Grand+Theft+Auto%3A+San+Andreas%22',so:'Reads San Andreas through Bakhtin’s idea of carnival: parody aimed at poverty, corruption and race relations.'},
+ {th:'place',q:'a very modernist, dystopian version of the American Dream',w:'Ruch (2012)',pub:'"Grand Theft Auto IV: Liberty City and modernist literature", Games and Culture',u:'https://doi.org/10.1177/1555412012454221',so:'Compares GTA IV with Joyce, Woolf and Eliot. Liberty City is a city you experience rather than read about.'},
+ {th:'place',q:'resulting in mixed messages and moments of ludonarrative dissonance',w:'Wills (2021)',pub:'"Ain’t the American Dream Grand: Satirical Play in GTA V", European Journal of American Studies',u:'https://doi.org/10.4000/ejas.17274',so:'GTA V satirises consumption and fakery, but its need to be a fun mainstream game blunts the critique.'},
+ {th:'place',q:'space that is designed to re-present and space that is designed for play',w:'Garrelts (2006)',pub:'"An Introduction to Grand Theft Auto Studies", The Meaning and Culture of GTA',u:'https://scholar.google.com/scholar?q=%22An+Introduction+to+Grand+Theft+Auto+Studies%22',so:'Puts the series’ core tension in spatial terms: a satirical model of a place, and a playground.'},
+ {th:'regulation',q:'censorship is alive and well in free trade liberal democratic countries',w:'Kerr (2006)',pub:'"Spilling Hot Coffee? Grand Theft Auto as contested cultural product"',u:'https://mural.maynoothuniversity.ie/id/eprint/436/',so:'Using Hot Coffee as a case, Kerr shows how ratings bodies and governments in different countries shaped a globally produced game.'},
+ {th:'ai',q:'images synthesized by a photorealistic open-world computer game',w:'Richter et al. (2016)',pub:'"Playing for Data: Ground Truth from Computer Games", ECCV',u:'https://arxiv.org/abs/1608.02192',so:'About 25,000 labelled GTA V frames, captured by intercepting the game’s graphics calls, cut the cost of training vision models.'},
+ {th:'ai',q:'real objects in real scenes can be learned and classified using synthetic data',w:'Johnson-Roberson et al. (2017)',pub:'"Driving in the Matrix", ICRA',u:'https://arxiv.org/abs/1610.01983',so:'Vehicle detectors trained only on GTA V scenes beat ones trained on real human-labelled images in their tests.'}
+];
+const qg=q('qg'),qf=q('qf');let qt='all';
+function drawQ(){qg.innerHTML=QS.filter(x=>qt==='all'||x.th===qt).map(x=>`<figure class="q"><span class="th">${QT[x.th]}</span><blockquote>${x.q}”</blockquote><div class="who">${x.w}</div><div class="pub"><a href="${x.u}" target="_blank" rel="noopener">${x.pub}</a></div><div class="so">${x.so}</div></figure>`).join('')}
+[['all','All'],...Object.entries(QT)].forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n.toUpperCase();if(k==='all')b.className='on';b.onclick=()=>{qt=k;qf.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawQ()};qf.appendChild(b)});
+drawQ();
 
 // on-enter animations
 function onEnter(s){ if(!cmpLoaded&&s.querySelector('.cmp')){cmpLoaded=true;['A','B'].forEach(x=>document.getElementById('cmp'+x)._load())}
