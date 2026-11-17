@@ -5,7 +5,7 @@ A resource built by Prof Andy Miah. An interactive insight deck on the history o
 **Live site:** https://profandymiah.github.io/gta/
 
 ## What's inside
-- 33 slides in 7 chapters, plus a Watch section and five perspective slides by Prof Andy Miah: Origins · The 3D leap · Moral panic · Prestige to platform · GTA as research instrument · Labour & leaks · Leonida (GTA VI)
+- 36 slides in 7 chapters, an "In conversation" Q&A,, plus a Watch section and five perspective slides by Prof Andy Miah: Origins · The 3D leap · Moral panic · Prestige to platform · GTA as research instrument · Labour & leaks · Leonida (GTA VI)
 - An interactive, filterable timeline of 49 events
 - A tile-map atlas of every GTA setting
 - A release-gap chart, a claim-vs-evidence toggle on violence research, flip cards on GTA in science, and embedded official trailers

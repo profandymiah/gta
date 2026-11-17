@@ -154,6 +154,17 @@ p{font-size:clamp(15px,1.35vw,19px);line-height:1.55;max-width:70ch;color:#e6e2d
 .lvl{font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-radius:8px;text-align:center}
 .lvl.lo{background:#2a3b2a;color:#9be59b}.lvl.mid{background:#3b3320;color:#ffd27a}.lvl.gp2{background:#262a3b;color:#a9b8ff}
 @media(max-width:700px){.vd{grid-template-columns:1fr}}
+
+/* Q&A */
+.qa{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:28px;align-items:start}
+@media(max-width:960px){.qa{grid-template-columns:1fr}}
+.qa-list{display:flex;flex-direction:column;gap:10px}
+.qa-list button{text-align:left;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:14px 16px;font:600 15px/1.35 var(--body);cursor:pointer}
+.qa-list button span{display:block;font:11px var(--mono);letter-spacing:.12em;color:var(--mute);margin-bottom:6px}
+.qa-list button.on{border-color:var(--a);background:color-mix(in srgb,var(--a) 12%,transparent)}
+.qa-a .pq{font-family:var(--display);text-transform:uppercase;font-size:clamp(24px,2.6vw,38px);line-height:1.05;color:var(--b);margin:0 0 16px}
+.qa-a p{font-size:16px;max-width:66ch}
+.qa-a .who{font:12px var(--mono);color:var(--mute);margin-top:10px}
 /* chrome */
 #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;
   background:linear-gradient(transparent,rgba(0,0,0,.7) 40%)}
@@ -694,6 +705,17 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
   <p class="hint" style="margin-top:12px">Tip: start with GTA (1997) vs the GTA VI launch trailer.</p>
 </section>
 
+
+<!-- Q&A -->
+<section class="slide era-vc" data-chapter="Synthesis" data-title="In conversation: Andy Miah">
+  <p class="kicker">In conversation · Prof Andy Miah</p>
+  <h2>Questions about GTA and culture</h2>
+  <div class="qa">
+    <div class="qa-list" id="qaL"></div>
+    <div class="qa-a" id="qaA"></div>
+  </div>
+</section>
+
 <!-- INSIGHTS -->
 <section class="slide era-vc" data-chapter="Synthesis" data-title="Ten insights">
   <p class="kicker">Synthesis</p>
@@ -1087,6 +1109,27 @@ drawQ();
 
 // COPY QUOTE
 document.querySelectorAll('.pull .copyq').forEach(b=>b.onclick=async()=>{const t='“'+b.closest('.pull').querySelector('blockquote').innerText.replace(/\s+/g,' ').trim()+'” — Prof Andy Miah, Inside GTA';try{await navigator.clipboard.writeText(t);b.textContent='Copied ✓'}catch(e){b.textContent='Select & copy'}setTimeout(()=>b.textContent='Copy quote',1800)});
+
+
+// Q&A
+const QA=[
+ {q:'Where does GTA sit between high and low culture, and what does it say that a game is as big a cultural and economic moment as a Taylor Swift album?',
+  pq:'GTA has made the line between high and low culture look like what it always was: a judgement about who the audience is, not about the work.',
+  a:['GTA has always been treated as low culture: violent, juvenile, commercial. But look at what it does. It builds whole satirical portraits of America and fills them with radio, advertising, politics and class, in the tradition of Swift (the satirist, Jonathan Swift, not Taylor) and <i>The Wire</i>. Scholars have compared it to modernist literature. It was never short of artistic ambition. What’s been missing is the status we give that ambition when it comes in a book or a film.',
+     'The comparison with a Taylor Swift album is right, and it tells us something. Both are moments of collective attention in a fragmented media world. Huge numbers of people do the same thing in the same week and talk about it together. That kind of shared cultural moment is now rare, and it increasingly comes from games and fandoms rather than from television or newspapers. When people book time off work for a launch and investors write notes on its opening weekend, it’s no longer just entertainment. It’s cultural infrastructure. Policymakers, funders and universities still haven’t fully caught up with that.']},
+ {q:'What can we learn from the fact that something so popular is set in an entirely digital world that is also heavily violent?',
+  pq:'Hundreds of millions of people have chosen to spend time in a city that doesn’t exist. That’s the story, more than the violence.',
+  a:['Two things. First, the digital world. GTA shows that people are entirely comfortable living part of their social and imaginative lives in virtual places. Los Santos has been a shared space for more than a decade, with its own economies, communities and even roleplay servers where people improvise characters for hours. If you want to know what the “metaverse” looks like in practice, it isn’t a tech company’s demo. It’s GTA Online.',
+     'Second, the violence. We should be honest that the evidence here is more complicated than either side claims. There’s no good evidence that GTA causes real-world violence. There is a small, disputed literature on aggression and attitudes, especially around how the games portray women. What GTA really shows is that audiences want permission to transgress in a space with no real consequences. That’s an old human desire, the same one that drives crime fiction, Shakespeare’s tragedies or a heist film. The more useful question isn’t “is it too violent?” but “what does it satirise, and do players get the joke?” Some do. Some don’t. That gap is where the interesting research is.']},
+ {q:'What else should we be paying attention to?',
+  pq:'GTA’s biggest legacy may not be what it taught players but what it taught machines.',
+  a:['GTA V has been used to train AI systems, including for self-driving cars, because its world is detailed enough to stand in for reality. So a satire of America has become training data for real technology. That raises a big question for the next decade: who builds the virtual worlds our machines learn from, and whose values are written into them?']}
+];
+const qaL=document.getElementById('qaL'),qaA=document.getElementById('qaA');
+function showQA(i){qaL.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('on',j===i));const x=QA[i];
+  qaA.innerHTML=`<p class="pq">“${x.pq}”</p>${x.a.map(t=>`<p>${t}</p>`).join('')}<p class="who">— Prof Andy Miah, Professor and Chair of Science Communication &amp; Future Media, University of Salford</p>`}
+QA.forEach((x,i)=>{const b=document.createElement('button');b.innerHTML=`<span>QUESTION ${i+1}</span>${x.q}`;b.onclick=()=>showQA(i);qaL.appendChild(b)});
+showQA(0);
 
 // on-enter animations
 function onEnter(s){ if(!cmpLoaded&&s.querySelector('.cmp')){cmpLoaded=true;['A','B'].forEach(x=>document.getElementById('cmp'+x)._load())}
