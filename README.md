@@ -1,6 +1,6 @@
 # Inside GTA — Wasted. Busted. Remade.
 
-An interactive insight deck on the history of **Grand Theft Auto**, from *Race'n'Chase* at DMA Design in Dundee (1995) to the launch of *Grand Theft Auto VI* (19 November 2026).
+A resource built by Prof Andy Miah. An interactive insight deck on the history of **Grand Theft Auto**, from *Race'n'Chase* at DMA Design in Dundee (1995) to the launch of *Grand Theft Auto VI* (19 November 2026).
 
 **Live site:** https://profandymiah.github.io/gta/
 
