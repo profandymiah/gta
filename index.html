@@ -128,6 +128,32 @@ p{font-size:clamp(15px,1.35vw,19px);line-height:1.55;max-width:70ch;color:#e6e2d
 .pull .copyq{margin-left:6px;background:transparent;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:6px 10px;font:600 11px var(--mono);cursor:pointer}
 .pull .copyq:hover{color:var(--ink);border-color:var(--ink)}
 .pull .ctx{max-width:62ch;margin-top:22px;font-size:15px;color:var(--mute)}
+
+/* evidence map */
+.ev-wrap{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:960px){.ev-wrap{grid-template-columns:1fr}}
+#evMap text{font-family:var(--mono)}
+.evdot{cursor:pointer;transition:transform .15s}
+.evdot:hover circle,.evdot.sel circle{stroke:#fff;stroke-width:3}
+.ev-detail{min-height:260px}
+.ev-detail h3{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;margin:4px 0 8px}
+.ev-detail .meta{font:12px var(--mono);color:var(--b)}
+.ev-detail .lim{font-size:13px;color:#ffb4b4;margin-top:8px}
+.ev-detail p{font-size:14px;margin:0 0 6px}
+.ev-power{margin-top:22px;max-width:900px}
+.ev-power h3{font-size:15px;margin-bottom:12px}
+.pw-track{position:relative;height:14px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.18))}
+.pw-zone{position:absolute;top:0;bottom:0;background:var(--b);opacity:.5;border-radius:8px}
+.pw-mark{position:absolute;top:-6px;width:3px;height:26px;background:var(--ink)}
+.pw-mark.hi{background:var(--a)}
+.pw-mark span{position:absolute;top:30px;left:0;transform:translateX(-10%);font:11px var(--mono);color:var(--mute);white-space:nowrap;line-height:1.35}
+.pw-mark:last-child span{transform:translateX(-100%)}
+.verdicts{display:flex;flex-direction:column;gap:10px;max-width:1100px}
+.vd{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.vd b{font-size:16px}.vd p{font-size:14px;margin:4px 0 0;max-width:none}
+.lvl{font:700 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-radius:8px;text-align:center}
+.lvl.lo{background:#2a3b2a;color:#9be59b}.lvl.mid{background:#3b3320;color:#ffd27a}.lvl.gp2{background:#262a3b;color:#a9b8ff}
+@media(max-width:700px){.vd{grid-template-columns:1fr}}
 /* chrome */
 #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;
   background:linear-gradient(transparent,rgba(0,0,0,.7) 40%)}
@@ -428,21 +454,55 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
   <div class="insight"><b>Insight</b><span>The ironic lesson: the scandal that hurt GTA most concerned sex, not violence, and it was triggered by players modifying code. Modding culture became a governance problem.</span></div>
 </section>
 
-<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="Claim vs evidence">
-  <p class="kicker">Chapter 3 · The evidence</p>
-  <h2>Does GTA make people violent?</h2>
-  <div class="seg" id="panicSeg"><button class="on" data-k="claim">The panic claim</button><button data-k="evidence">What research found</button></div>
-  <div id="panicBody"></div>
-  <p class="src">Sources: Kühn et al. (2018) <i>Molecular Psychiatry</i>, doi:10.1038/s41380-018-0031-7; APA Resolution on Violent Video Games (2020); <i>Brown v. EMA</i>, 564 U.S. 786 (2011).</p>
+<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="The evidence, weighed">
+  <p class="kicker">Chapter 3 · The evidence, weighed</p>
+  <h2>Does GTA make people violent? It depends what you measure.</h2>
+  <p>Thirty years of research does not give a clean yes or no. The answer changes with the <b>outcome</b> (violent crime, everyday aggression, attitudes), the <b>method</b> (lab session, months-long trial, multi-year cohort, meta-analysis) and the <b>population</b> (adults or adolescents). Filter the studies and click any dot.</p>
+  <div class="gp-filters" id="evF"></div>
+  <div class="ev-wrap">
+    <svg id="evMap" viewBox="0 0 820 330" role="img" aria-label="Evidence map of violent video game studies by design and finding"></svg>
+    <div class="card ev-detail" id="evD"><p class="mute">Select a study to see what it found, and where it is weak.</p></div>
+  </div>
+  <p class="src">Rows show study design; columns show what was found. Stars mark GTA-specific studies; other dots show the publication year. The placement is an editorial summary of each paper's own conclusions, not a statistical synthesis.</p>
+</section>
+
+<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="Scrutinising the 2018 GTA V study">
+  <p class="kicker">Chapter 3 · Close reading</p>
+  <h2>The 2018 GTA V study: strong design, narrow answer</h2>
+  <p>Kühn et al. (2018) is the study most often cited to show GTA is harmless. It deserves credit, and it also has clear limits.</p>
+  <div class="row cols-3" style="margin-top:6px">
+    <div class="card"><h3>What it did</h3><p>77 adults (mean age 28, about half women) were split three ways: 30 minutes a day of GTA V, The Sims 3, or no game, for two months. They took a broad battery of tests before, straight after, and two months later.</p></div>
+    <div class="card"><h3>Strengths</h3><p>It tracked repeated play over weeks rather than one lab session. It used many outcomes (aggression, empathy, sexist attitudes, impulsivity, mood, executive control), included an active control game and a follow-up, and is open access. It found no relevant effects on any measure.</p></div>
+    <div class="card"><h3>Limits</h3><p><b>Adults, not adolescents</b>, though concern centres on young players. <b>About 25 people per group</b>, small for detecting subtle effects. <b>Assigned, moderate play</b> (30 min/day) isn't the same as chosen, heavy play. <b>Test scores, not real-world behaviour.</b> And no effect found is not proof of zero effect.</p></div>
+  </div>
+  <div class="ev-power">
+    <h3>Why sample size matters here: an illustration</h3>
+    <div class="pw-track"><div class="pw-zone" style="left:0;width:10%"></div><div class="pw-mark" style="left:6%"><span>Meta-analytic estimates<br><b>r ≈ 0.06–0.08</b></span></div><div class="pw-mark hi" style="left:37%"><span>Roughly the smallest effect a<br>~25-per-group comparison<br>detects reliably <b>(r ≈ 0.35+)</b></span></div><div class="pw-mark" style="left:100%"><span>r = 1</span></div></div>
+    <p class="mute" style="font-size:13px;margin-top:66px">Illustrative: the threshold is a standard power estimate for a simple two-group comparison (80% power, α = .05). Kühn et al.'s repeated-measures design gains some power, but the gap stays wide. A null result from a study this size fits <i>both</i> "no effect" and "a tiny effect".</p>
+  </div>
+  <p class="src">Sources: Kühn et al. (2018/2019), Molecular Psychiatry 24:1220–1234; reporting by Neuroscience News, GoodTherapy and Gizmodo (incl. Ferguson's comment on sample size); Prescott et al. (2018) PNAS; Drummond, Sauer &amp; Ferguson (2020) R. Soc. Open Sci.</p>
+</section>
+
+<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="What we can and can't say">
+  <p class="kicker">Chapter 3 · Verdict, graded</p>
+  <h2>What we can and can't say</h2>
+  <div class="verdicts">
+    <div class="vd"><span class="lvl lo">Not supported</span><div><b>GTA (or violent games generally) causes real-world violent behaviour.</b><p>The APA's 2020 resolution found insufficient evidence for a causal link to violent behaviour. This is now the mainstream position.</p></div></div>
+    <div class="vd"><span class="lvl mid">Contested</span><div><b>Violent games produce a small rise in everyday aggression.</b><p>Meta-analyses agree any effect is small. They disagree on whether it is real or an artefact of method: Prescott et al. (2018) find β ≈ 0.08 for physical aggression over time; Drummond et al. (2020) find r ≈ 0.06, weaker still in the best-quality studies. Mathur &amp; VanderWeele (2019) argue that all point to effects that are real but "almost always quite small".</p></div></div>
+    <div class="vd"><span class="lvl mid">Contested</span><div><b>GTA's specific content can shift attitudes in some players.</b><p>Teng et al. (2011) saw a small rise in pro-violence attitudes after GTA IV. Gabbiadini et al. (2016) found an indirect link from GTA's violent-sexist content to lower empathy for female victims among young men who identified with the lead. Ferguson &amp; Donnellan (2017) reanalysed the data and disputed the finding; the original authors replied.</p></div></div>
+    <div class="vd"><span class="lvl gp2">Evidence gap</span><div><b>Effects on children and young teens who play an 18-rated game.</b><p>The GTA-specific trials mostly study adults, for ethical reasons. Large cohort data on adolescents (e.g. Przybylski &amp; Weinstein, 2019) found no link with aggression, but it covers violent games in general rather than GTA.</p></div></div>
+    <div class="vd"><span class="lvl gp2">Under-studied</span><div><b>Who is affected, and how.</b><p>Moderators such as identification with characters, existing aggression, mental health and cultural background (Prescott et al. found effects varied by ethnicity) matter more than "violent game: yes/no".</p></div></div>
+  </div>
+  <div class="insight"><b>Science-communication insight</b><span>Both public camps oversimplify. "GTA causes violence" is unsupported; "science proves GTA is harmless" overstates what null results from small adult samples can show. The honest message is narrower: no evidence of a link to violence, small and disputed effects on aggression, open questions about attitudes and young players.</span></div>
 </section>
 
 
 <section class="slide era-panic pull" data-chapter="3 · Moral panic" data-title="Andy Miah: The panic that outlived the evidence">
   <p class="kicker">Perspective · Public discussion</p>
   <div class="mark" aria-hidden="true">&ldquo;</div>
-  <blockquote>The evidence moved on. The panic didn’t. That gap is not a failure of gaming; it is a failure of <em>science communication</em>, and GTA is the case study we should all be teaching.</blockquote>
+  <blockquote>The evidence got more complicated. The public debate stayed simple. That gap is a failure of <em>science communication</em> on both sides, and GTA is the case study we should all be teaching.</blockquote>
   <div class="attr"><b>Prof Andy Miah</b><span>Professor and Chair of Science Communication &amp; Future Media, University of Salford</span><button class="copyq">Copy quote</button></div>
-  <p class="ctx">Why it matters: the violent-games debate shows how a vivid cultural object can carry a scientific claim far beyond its data. Knowledge activists have to compete with stories, not just publish findings.</p>
+  <p class="ctx">Why it matters: neither “games cause violence” nor “science proves games are harmless” survives contact with the literature. Knowledge activists have to communicate uncertainty and nuance while competing with simpler stories.</p>
 </section>
 
 <!-- CH4 PLATFORM -->
@@ -515,7 +575,7 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
   <div class="row cols-3" style="margin-top:8px">
     <div class="flip"><div class="in"><div class="f"><h3>Training AI</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Playing for Data</b> (Richter et al., ECCV 2016) captured about 25,000 GTA V frames with pixel-level labels, showing that game-generated imagery can cut the cost of training computer-vision models.</p></div></div></div>
     <div class="flip"><div class="in"><div class="f"><h3>Self-driving cars</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Driving in the Matrix</b> (Johnson-Roberson et al., ICRA 2017) trained vehicle detectors on GTA V scenes, with results competitive with networks trained on real-world images.</p></div></div></div>
-    <div class="flip"><div class="in"><div class="f"><h3>Psychology</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Kühn et al. (2018)</b> had adults play GTA V daily for two months and found no meaningful rise in aggression or fall in empathy compared with controls.</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Psychology</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Kühn et al. (2018)</b> found no effects after two months of GTA V in 77 adults; <b>Gabbiadini et al. (2016)</b> linked its violent-sexist content to lower empathy for female victims in some young men. The picture is mixed.</p></div></div></div>
     <div class="flip"><div class="in"><div class="f"><h3>Game studies</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>GTA anchors debates on <b>procedural rhetoric</b> (Bogost, <i>Persuasive Games</i>, 2007), satire, and space. See also Garrelts (ed.), <i>The Meaning and Culture of Grand Theft Auto</i> (2006).</p></div></div></div>
     <div class="flip"><div class="in"><div class="f"><h3>Representation</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>Scholars have examined race (San Andreas), gender (sex work, the absence of female leads until VI), and immigrant identity (Niko Bellic in GTA IV).</p></div></div></div>
     <div class="flip"><div class="in"><div class="f"><h3>Media &amp; drama</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>The BBC drama <i>The Gamechangers</i> (2015) dramatised Rockstar's battle with Jack Thompson; Rockstar sued the BBC over it, which shows how tightly the company controls its own story.</p></div></div></div>
@@ -643,7 +703,7 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
     <div class="card"><p><b>2. Outrage is marketing.</b> From Max Clifford to cable news, condemnation amplified reach.</p></div>
     <div class="card"><p><b>3. The city is the star.</b> Simulated publics (traffic, pedestrians, police) are the series' true protagonist.</p></div>
     <div class="card"><p><b>4. Satire runs on radio.</b> Ads, DJs and talk shows carry most of the cultural critique.</p></div>
-    <div class="card"><p><b>5. Panic outran evidence.</b> Long-term studies don't support the violence claims; the 2005 scandal was about sex and modding.</p></div>
+    <div class="card"><p><b>5. The evidence is narrower than both camps claim.</b> No support for a link to violence; small, disputed effects on aggression; open questions on attitudes and young players.</p></div>
     <div class="card"><p><b>6. Product became platform.</b> GTA Online turned a 2013 game into a 13-year service.</p></div>
     <div class="card"><p><b>7. Scarcity is strategy.</b> A 13-year gap made GTA VI a generational media event.</p></div>
     <div class="card"><p><b>8. Fiction trains machines.</b> GTA V helped pioneer synthetic training data for AI.</p></div>
@@ -781,7 +841,9 @@ const EV=[
  [2016.1,'labour','2016','Benzies departs','Long-time producer Leslie Benzies leaves and sues over royalties (later settled).'],
  [2016.7,'research','2016','Playing for Data','GTA V used to generate labelled data for computer vision (ECCV).'],
  [2017.4,'research','2017','Driving in the Matrix','GTA V scenes used to train vehicle detectors for autonomous driving.'],
- [2018.2,'research','Mar 2018','Kühn et al.','Two months of daily GTA V play: no long-term effect on aggression.'],
+ [2018.2,'research','Mar 2018','Kühn et al.','77 adults, two months of GTA V: no measurable effects. Influential but small and adult-only.'],
+ [2018.75,'research','Oct 2018','Prescott et al. (PNAS)','Meta-analysis of 24 studies: small link between violent play and later physical aggression in youth.'],
+ [2016.3,'research','Apr 2016','Gabbiadini et al.','GTA\'s violent-sexist content linked (indirectly) to lower empathy for female victims among some young men.'],
  [2018.8,'labour','Oct 2018','"100-hour weeks"','Dan Houser\'s comment sparks reporting on crunch at Rockstar.'],
  [2020.2,'research','2020','APA resolution','The APA finds insufficient evidence linking violent games to violent behaviour.'],
  [2020.19,'labour','Mar 2020','Dan Houser leaves','The co-founder and lead writer departs Rockstar.'],
@@ -834,15 +896,42 @@ const GAPS=[['GTA → GTA 2',1.9],['GTA 2 → III',2.0],['III → Vice City',1.0
 const gw=document.getElementById('gaps');
 GAPS.forEach(([n,v])=>gw.insertAdjacentHTML('beforeend',`<div class="gap"><span>${n}</span><div class="barw"><div class="bar" data-w="${v/13.2*100}"></div></div><span class="v">${v} yrs</span></div>`));
 
-// PANIC TOGGLE
-const PB={
- claim:`<div class="row cols-3"><div class="card"><h3>The intuition</h3><p>Rehearsing violence and rewarding crime must make players more aggressive, especially children.</p></div><div class="card"><h3>The evidence base</h3><p>Lab studies of short play sessions found small, immediate rises in aggressive thoughts. These were widely cited as proof of harm.</p></div><div class="card"><h3>The politics</h3><p>After shootings, politicians repeatedly named violent games, and GTA was the go-to example.</p></div></div>`,
- evidence:`<div class="row cols-3"><div class="card"><h3>Priming, not change</h3><p>Researchers argued short-term lab effects may reflect priming (thoughts made briefly more accessible) rather than lasting change in behaviour.</p></div><div class="card"><h3>Two months of GTA V</h3><p>Kühn et al. (2018) assigned adults to daily GTA V, The Sims 3, or no game for two months and found no relevant effects on aggression, empathy or other measures, then or two months later.</p></div><div class="card"><h3>Institutions shift</h3><p>The US Supreme Court (2011) rejected the case for restricting sales. The APA's 2020 resolution found insufficient evidence linking violent games to violent behaviour.</p></div></div>
- <div class="insight"><b>Science-communication insight</b><span>The violent-games story outlived its evidence. GTA is a textbook case of how a vivid cultural object can carry a scientific claim further than the data supports.</span></div>`
-};
-const ps=document.getElementById('panicSeg'),pb=document.getElementById('panicBody');
-ps.querySelectorAll('button').forEach(b=>b.onclick=()=>{ps.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));pb.innerHTML=PB[b.dataset.k]});
-pb.innerHTML=PB.claim;
+// EVIDENCE MAP
+const EVR=['Lab / short trial','Longitudinal trial','Cohort / survey','Meta-analysis / review'];
+const EVC=['Effect found','Small or mixed','No effect found'];
+const EV2=[
+ {n:'APA Task Force (2015)',r:3,c:0,pop:'mixed',gta:false,y:2015,f:'Review of 2005–13 research: a "consistent relation" between violent game use and aggression, but insufficient evidence on criminal violence.',l:'Criticised for its methods and wording; a 2020 reanalysis (Ferguson et al.) found negligible relationships.',u:'https://www.apa.org/news/press/releases/2015/08/violent-video-games'},
+ {n:'Teng et al. (2011)',r:1,c:1,pop:'adults',gta:true,y:2011,f:'135 participants; 12 hours of GTA IV over 3 weeks. No rise in aggression or fall in empathy, but a small increase in pro-violence attitudes.',l:'Young adult sample in Singapore; short exposure; attitude measures.',u:'https://doi.org/10.1089/cyber.2010.0115'},
+ {n:'Gabbiadini et al. (2016)',r:0,c:0,pop:'adolescents',gta:true,y:2016,f:'154 participants played GTA San Andreas/Vice City, a violent-only game or a neutral one. Among boys who identified with the lead, violent-sexist play raised masculine beliefs, which predicted lower empathy for female victims.',l:'Single session; indirect (mediated) effect; disputed by Ferguson & Donnellan (2017) reanalysis, with a reply from the authors.',u:'https://doi.org/10.1371/journal.pone.0152121'},
+ {n:'Kühn et al. (2018)',r:1,c:2,pop:'adults',gta:true,y:2018,f:'77 adults: GTA V, The Sims 3 or no game, 30 min/day for 2 months. No relevant effects on any measure, after play or 2 months later.',l:'Adults only; ~25 per group; assigned moderate play; test measures not real-world behaviour. See next slide.',u:'https://doi.org/10.1038/s41380-018-0031-7'},
+ {n:'Prescott, Sargent & Hull (2018)',r:3,c:1,pop:'adolescents',gta:false,y:2018,f:'Meta-analysis of 24 prospective studies (17,000+ youth): violent play predicted later physical aggression, β ≈ 0.08 after controls. No publication bias detected.',l:'Small effect; varied by ethnicity (largest among White participants, non-significant among Hispanic); observational designs.',u:'https://doi.org/10.1073/pnas.1611617114'},
+ {n:'Przybylski & Weinstein (2019)',r:2,c:2,pop:'adolescents',gta:false,y:2019,f:'Pre-registered study of 1,004 British 14–15-year-olds plus their carers; game violence coded from PEGI/ESRB ratings. No link between violent play and carer-rated aggression.',l:'Cross-sectional (one time point); carer reports; violent games in general, not GTA.',u:'https://doi.org/10.1098/rsos.171474'},
+ {n:'Mathur & VanderWeele (2019)',r:3,c:1,pop:'mixed',gta:false,y:2019,f:'Re-analysed three rival meta-analyses: despite "wars" over significance, all point to effects that exist in most settings but are almost always quite small.',l:'Synthesises existing meta-analyses, so it inherits their study quality.',u:'https://pmc.ncbi.nlm.nih.gov/articles/PMC6904227/'},
+ {n:'Drummond, Sauer & Ferguson (2020)',r:3,c:2,pop:'adolescents',gta:false,y:2020,f:'Meta-analysis of 28 longitudinal samples (~21,000 youth): r = 0.059, judged too small to be practically meaningful; no significant link in the highest-quality studies.',l:'Effect size close to Prescott et al.; the disagreement is mainly about interpretation and study quality.',u:'https://doi.org/10.1098/rsos.200373'},
+ {n:'APA Resolution (2020)',r:3,c:2,pop:'mixed',gta:false,y:2020,f:'Insufficient scientific evidence for a causal link between violent games and violent behaviour; still recognises a small, reliable link with aggression.',l:'A policy statement, not new data; distinguishes "aggression" from "violence".',u:'https://www.apa.org/news/press/releases/2020/03/violent-video-games-behavior'},
+ {n:'Coyne & Stockdale (2021)',r:2,c:1,pop:'adolescents',gta:false,y:2021,f:'Ten-year US cohort: three trajectories of violent play (high 4%, moderate 23%, low 73%). Higher-play groups were more often male and, initially, depressed.',l:'Shows play patterns vary; outcome links were limited.',u:'https://doi.org/10.1089/cyber.2020.0049'},
+ {n:'Lengersdorff et al. (2023/24)',r:1,c:2,pop:'adults',gta:true,y:2024,f:'89 young men new to gaming played GTA V (kill-focused) or a modified non-violent version over several weeks. No change in neural or behavioural empathy for others’ pain.',l:'Adult men only; lab setting; the authors themselves caution against generalising.',u:'https://elifesciences.org/articles/94949'}
+];
+const evF=document.getElementById('evF'),evM=document.getElementById('evMap'),evD=document.getElementById('evD');
+let evFilter='all';
+const EVFS={all:'All studies',gta:'GTA-specific ★',adolescents:'Young people',adults:'Adults'};
+Object.entries(EVFS).forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n.toUpperCase();if(k==='all')b.className='on';b.onclick=()=>{evFilter=k;evF.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawEV()};evF.appendChild(b)});
+function drawEV(){
+  const X0=170,CW=210,Y0=40,RH=70;let h='';
+  EVC.forEach((c,i)=>h+=`<text x="${X0+i*CW+CW/2}" y="22" text-anchor="middle" font-size="12" fill="${['#ff8a8a','#ffd27a','#9be59b'][i]}">${c.toUpperCase()}</text>`);
+  EVR.forEach((r,i)=>{h+=`<rect x="${X0}" y="${Y0+i*RH}" width="${CW*3}" height="${RH-6}" rx="8" fill="rgba(255,255,255,${i%2?.03:.06})"/><text x="${X0-10}" y="${Y0+i*RH+RH/2}" text-anchor="end" font-size="11" fill="#a7a3b3">${r}</text>`});
+  const slots={};
+  EV2.forEach((e,i)=>{const on=evFilter==='all'||(evFilter==='gta'?e.gta:e.pop===evFilter||e.pop==='mixed'&&false);
+    const key=e.r+'-'+e.c;slots[key]=(slots[key]||0)+1;const k=slots[key]-1;
+    const cx=X0+e.c*CW+30+(k%4)*48,cy=Y0+e.r*RH+(RH-6)/2+(k>=4?14:0);
+    const col=['#ff8a8a','#ffd27a','#9be59b'][e.c];
+    h+=`<g class="evdot" data-i="${i}" opacity="${on?1:.15}" tabindex="0"><circle cx="${cx}" cy="${cy}" r="15" fill="${col}"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="${e.gta?14:10}" font-weight="700" fill="#111" pointer-events="none">${e.gta?'★':String(e.y).slice(2)}</text></g>`});
+  evM.innerHTML=h;
+  evM.querySelectorAll('.evdot').forEach(g=>{const show=()=>{const e=EV2[+g.dataset.i];evM.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');
+    evD.innerHTML=`<div class="meta">${EVR[e.r]} · ${EVC[e.c]} · ${e.pop==='mixed'?'mixed ages':e.pop}${e.gta?' · GTA-specific':''}</div><h3>${e.n}</h3><p>${e.f}</p><p class="lim"><b>Limits:</b> ${e.l}</p><p><a href="${e.u}" target="_blank" rel="noopener">Read the source ↗</a></p>`};
+    g.onclick=show;g.onkeydown=k=>{if(k.key==='Enter')show()}});
+}
+drawEV();
 
 // FLIP CARDS
 document.querySelectorAll('.flip').forEach(c=>{c.tabIndex=0;c.onclick=()=>c.classList.toggle('on');c.onkeydown=e=>{if(e.key==='Enter')c.classList.toggle('on')}});
@@ -979,7 +1068,7 @@ setInterval(()=>{const s=q('siren');if(s)s.setAttribute('fill',s.getAttribute('f
 const QT={effects:'Effects & players',race:'Race & representation',place:'Satire & place',regulation:'Regulation',ai:'AI & simulation'};
 const QS=[
  {th:'effects',q:'they do not passively receive the games’ images and content',w:'DeVane & Squire (2008)',pub:'"The meaning of race and violence in Grand Theft Auto: San Andreas", Games and Culture',u:'https://doi.org/10.1177/1555412008317308',so:'Studying young players in natural settings, they found that players read GTA through their own lives and knowledge.'},
- {th:'effects',q:'a more realistic scientific perspective on the effects of violent video gaming',w:'Kühn et al. (2018)',pub:'"Does playing violent video games cause aggression?", Molecular Psychiatry',u:'https://doi.org/10.1038/s41380-018-0031-7',so:'Two months of daily GTA V play: no measurable rise in aggression or fall in empathy.'},
+ {th:'effects',q:'a more realistic scientific perspective on the effects of violent video gaming',w:'Kühn et al. (2018)',pub:'"Does playing violent video games cause aggression?", Molecular Psychiatry',u:'https://doi.org/10.1038/s41380-018-0031-7',so:'Two months of GTA V in 77 adults: no measurable effects. A small adult-only sample, so read it alongside the evidence review in Chapter 3.'},
  {th:'effects',q:'they suggest a small increase in proviolence attitudes',w:'Teng et al. (2011)',pub:'"Grand Theft Auto IV comes to Singapore", Cyberpsychology, Behavior, and Social Networking',u:'https://doi.org/10.1089/cyber.2010.0115',so:'Twelve hours of GTA IV over three weeks did not raise aggression or reduce empathy. The small shift in attitudes is a useful caveat.'},
  {th:'effects',q:'longitudinal research is rare',w:'Coyne & Stockdale (2021)',pub:'"Growing up with Grand Theft Auto: A 10-year study…", Cyberpsychology, Behavior, and Social Networking',u:'https://doi.org/10.1089/cyber.2020.0049',so:'Tracking adolescents for a decade, they found three distinct patterns of violent-game play rather than one trajectory.'},
  {th:'race',q:'primary comedic weapon in addressing these issues is parody',w:'Annandale (2006)',pub:'"The Subversive Carnival of Grand Theft Auto: San Andreas", in Garrelts (ed.), The Meaning and Culture of GTA',u:'https://scholar.google.com/scholar?q=%22The+Subversive+Carnival+of+Grand+Theft+Auto%3A+San+Andreas%22',so:'Reads San Andreas through Bakhtin’s idea of carnival: parody aimed at poverty, corruption and race relations.'},
