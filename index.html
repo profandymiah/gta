@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wasted, Busted, Remade — An Insight Deck on Grand Theft Auto, 1995–2026</title>
+<meta name="description" content="An interactive insight deck on the history of Grand Theft Auto: from Race'n'Chase in Dundee to the launch of GTA VI. Timelines, data, controversies, research and labour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b10; --ink:#f4f1ea; --mute:#a7a3b3; --line:rgba(255,255,255,.12);
+  --a:#ff3d8b; --b:#ffb347; --c:#19d3c5; --card:rgba(255,255,255,.05);
+  --display:'Anton', Impact, 'Arial Narrow', sans-serif;
+  --body:'Inter', system-ui, sans-serif; --mono:'JetBrains Mono', ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden}
+a{color:var(--c)}
+/* Era palettes */
+.era-dma{--a:#39ff6a;--b:#c9ff39;--c:#39c6ff}
+.era-lc{--a:#ffd23f;--b:#ff7a1a;--c:#9fb4c7}
+.era-vc{--a:#ff3d8b;--b:#ffb347;--c:#19d3c5}
+.era-sa{--a:#7bd389;--b:#f2c14e;--c:#d65a31}
+.era-panic{--a:#ff4545;--b:#ffd1d1;--c:#8c8cff}
+.era-ls{--a:#57e389;--b:#f6f5f4;--c:#62a0ea}
+.era-lab{--a:#c4b5fd;--b:#fca5a5;--c:#67e8f9}
+.era-leo{--a:#ff5fa2;--b:#ff9f43;--c:#2ee6d6}
+
+#deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;padding:clamp(20px,5vw,72px) clamp(20px,6vw,96px) 96px;display:flex;flex-direction:column;justify-content:center;
+  opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity .45s ease, transform .45s ease;overflow-y:auto;
+  background:radial-gradient(1200px 600px at 85% -10%, color-mix(in srgb,var(--a) 22%, transparent), transparent 60%),
+             radial-gradient(900px 500px at -10% 110%, color-mix(in srgb,var(--c) 18%, transparent), transparent 60%), var(--bg)}
+.slide.active{opacity:1;pointer-events:auto;transform:none}
+.slide.prev{transform:translateX(-40px)}
+.kicker{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--a);margin:0 0 14px}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.01em;line-height:.95;margin:0 0 18px;text-transform:uppercase}
+h1{font-size:clamp(48px,9vw,132px)}
+h2{font-size:clamp(34px,5.4vw,76px)}
+h3{font-size:18px;margin:0 0 8px}
+p{font-size:clamp(15px,1.35vw,19px);line-height:1.55;max-width:70ch;color:#e6e2da;margin:0 0 14px}
+.lede{font-size:clamp(17px,1.7vw,23px);color:var(--ink)}
+.mute{color:var(--mute)}
+.grad{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.row{display:grid;gap:20px}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.cols-2,.cols-3,.cols-4{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card p{font-size:15px;margin:0}
+.stat{font-family:var(--display);font-size:clamp(40px,5vw,72px);line-height:1;color:var(--a)}
+.stat small{font-size:.4em;color:var(--b)}
+.insight{border-left:4px solid var(--a);padding:10px 0 10px 18px;margin:18px 0 0;max-width:80ch}
+.insight b{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--a);display:block;margin-bottom:4px;text-transform:uppercase}
+.insight span{font-size:clamp(16px,1.5vw,21px);line-height:1.45}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 8px;border:1px solid var(--line);border-radius:99px;margin:0 6px 6px 0;color:var(--mute)}
+.src{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:16px}
+.src a{color:var(--mute)}
+
+/* chrome */
+#bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;
+  background:linear-gradient(transparent,rgba(0,0,0,.7) 40%)}
+#bar button{background:rgba(255,255,255,.08);color:var(--ink);border:1px solid var(--line);border-radius:10px;height:38px;min-width:38px;padding:0 12px;cursor:pointer;font:600 14px var(--body)}
+#bar button:hover{background:rgba(255,255,255,.16)}
+#prog{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:9px;overflow:hidden}
+#prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff3d8b,#ffb347,#19d3c5);transition:width .4s}
+#count{font-family:var(--mono);font-size:12px;color:var(--mute);min-width:64px;text-align:right}
+#menu{position:fixed;top:0;right:0;bottom:0;width:min(380px,90vw);background:#121218;border-left:1px solid var(--line);z-index:20;transform:translateX(100%);transition:transform .3s;overflow:auto;padding:24px}
+#menu.open{transform:none}
+#menu h3{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--mute);text-transform:uppercase;margin:18px 0 6px}
+#menu a{display:block;color:var(--ink);text-decoration:none;padding:6px 8px;border-radius:8px;font-size:14px}
+#menu a:hover,#menu a.cur{background:rgba(255,255,255,.08)}
+
+/* timeline */
+.tl-filters{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 16px}
+.tl-filters button{font:600 12px var(--mono);letter-spacing:.06em;padding:7px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--mute);cursor:pointer}
+.tl-filters button.on{color:#000;background:var(--ink)}
+.tl-track{position:relative;height:120px;border-bottom:2px solid var(--line);margin:10px 0 0}
+.tl-dot{position:absolute;bottom:-8px;width:14px;height:14px;border-radius:50%;transform:translateX(-50%);cursor:pointer;border:2px solid var(--bg);transition:transform .15s}
+.tl-dot:hover,.tl-dot.sel{transform:translateX(-50%) scale(1.6)}
+.tl-years{position:relative;height:24px;font:11px var(--mono);color:var(--mute)}
+.tl-years span{position:absolute;transform:translateX(-50%);top:6px}
+.tl-detail{min-height:120px;margin-top:20px}
+.tl-detail .when{font:600 13px var(--mono);color:var(--b)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font:12px var(--mono);color:var(--mute)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* gap chart */
+.gaps{display:flex;flex-direction:column;gap:8px;max-width:900px}
+.gap{display:grid;grid-template-columns:150px 1fr 60px;align-items:center;gap:12px;font-size:14px}
+.gap .barw{height:22px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.gap .bar{height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));border-radius:6px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.gap .v{font:600 13px var(--mono);color:var(--ink)}
+
+/* map */
+.mapwrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.mapwrap{grid-template-columns:1fr}}
+svg text{font-family:var(--mono)}
+.st{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.12)}
+.st.hot{cursor:pointer;transition:fill .2s}
+.st.hot:hover,.st.hot.sel{filter:brightness(1.3)}
+
+/* video facade */
+.vid{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(135deg,color-mix(in srgb,var(--a) 50%,#000),color-mix(in srgb,var(--c) 40%,#000));display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;cursor:pointer}
+.vid .play{width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.vid .play:after{content:"";border-left:22px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px}
+.vid .lbl{font:600 14px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* toggle & donut */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.seg button{background:transparent;color:var(--mute);border:0;padding:10px 16px;font:600 13px var(--body);cursor:pointer}
+.seg button.on{background:var(--a);color:#000}
+#count-down{display:flex;gap:16px;margin-top:20px}
+#count-down div{text-align:center}
+#count-down b{display:block;font-family:var(--display);font-size:clamp(36px,5vw,64px);color:var(--b);line-height:1}
+#count-down span{font:11px var(--mono);color:var(--mute);letter-spacing:.14em;text-transform:uppercase}
+.flip{perspective:1000px;cursor:pointer;min-height:170px}
+.flip .in{position:relative;width:100%;height:100%;min-height:170px;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .bk{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:18px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;justify-content:center}
+.flip .bk{transform:rotateY(180deg);background:color-mix(in srgb,var(--a) 14%, #111)}
+.flip .f h3{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase}
+.flip p{font-size:14px;margin:0}
+.hint{font:11px var(--mono);color:var(--mute);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+ol.refs{columns:2;column-gap:40px;font-size:13px;line-height:1.5;padding-left:18px}
+@media(max-width:900px){ol.refs{columns:1}}
+ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
+.noscroll-hint{position:fixed;top:14px;right:18px;font:11px var(--mono);color:var(--mute);z-index:5}
+</style>
+</head>
+<body>
+<div class="noscroll-hint">← → keys · swipe · M for menu</div>
+<main id="deck">
+
+<!-- 0 TITLE -->
+<section class="slide era-vc" data-chapter="Start" data-title="Title">
+  <p class="kicker">An insight deck · 1995 → 2026</p>
+  <h1><span class="grad">Wasted.</span><br>Busted.<br>Remade.</h1>
+  <p class="lede">How a failed police-chase prototype in Dundee became the defining entertainment franchise of the 21st century, and what it tells us about play, cities, moral panic, platforms and labour.</p>
+  <div id="count-down" aria-live="polite"></div>
+  <p class="mute" id="cd-label" style="margin-top:8px">until Grand Theft Auto VI launches, Thursday 19 November 2026</p>
+</section>
+
+<!-- 1 BIG NUMBERS -->
+<section class="slide era-vc" data-chapter="Start" data-title="The franchise in numbers">
+  <p class="kicker">The scale of the thing</p>
+  <h2>Five numbers to hold in your head</h2>
+  <div class="row cols-4" style="margin-top:10px">
+    <div class="card"><div class="stat">~475m</div><p>GTA franchise units sold-in, per Take-Two's August 2026 update.</p></div>
+    <div class="card"><div class="stat">230m<small>+</small></div><p>Grand Theft Auto V alone, still selling roughly 5m a quarter 13 years after launch.</p></div>
+    <div class="card"><div class="stat">13.2<small>yrs</small></div><p>The gap between GTA V (Sept 2013) and GTA VI (Nov 2026), the longest in the series.</p></div>
+    <div class="card"><div class="stat">90.4m</div><p>YouTube views for GTA VI Trailer 1 in 24 hours: a Guinness record for a game reveal.</p></div>
+  </div>
+  <div class="insight"><b>Headline insight</b><span>GTA V roughly equals half the franchise's lifetime sales on its own. The series stopped behaving like a run of sequels and started behaving like infrastructure.</span></div>
+  <p class="src">Sources: Outlook Respawn on Take-Two Q1 FY27 results (Aug 2026); Guinness via TweakTown.</p>
+</section>
+
+<!-- 2 MAP OF THE DECK -->
+<section class="slide era-vc" data-chapter="Start" data-title="How to use this deck">
+  <p class="kicker">Navigation</p>
+  <h2>Seven chapters, one throughline</h2>
+  <div class="row cols-3">
+    <div class="card"><h3>1 · Origins (1995–1999)</h3><p>Dundee, DMA Design, Race'n'Chase, and the press campaign that sold outrage.</p></div>
+    <div class="card"><h3>2 · The 3D leap (2001–2004)</h3><p>GTA III, Vice City, San Andreas: how the open world became a genre.</p></div>
+    <div class="card"><h3>3 · Moral panic (2005–2020)</h3><p>Hot Coffee, lawsuits, the Supreme Court, and what the evidence says.</p></div>
+    <div class="card"><h3>4 · Prestige to platform (2008–2026)</h3><p>GTA IV, GTA V, GTA Online and the economics of never ending.</p></div>
+    <div class="card"><h3>5 · GTA as research instrument</h3><p>From game studies to training data for self-driving cars.</p></div>
+    <div class="card"><h3>6 · Labour, leaks &amp; power</h3><p>Crunch, hacks, and the 2025–26 union dispute.</p></div>
+    <div class="card"><h3>7 · Leonida (GTA VI)</h3><p>Delays, trailers, $80, and the launch week.</p></div>
+    <div class="card"><h3>+ Interactive timeline &amp; atlas</h3><p>Filter 50+ events; explore where every game is set.</p></div>
+    <div class="card"><h3>+ Ten insights &amp; reading list</h3><p>Takeaways and sources for teaching, talks and research.</p></div>
+  </div>
+  <p class="mute" style="margin-top:16px">Use ← → or swipe. Press <b>M</b> or the ☰ button for the chapter menu. Every slide has its own link.</p>
+</section>
+
+<!-- 3 TIMELINE -->
+<section class="slide era-vc" data-chapter="Explore" data-title="Interactive timeline">
+  <p class="kicker">Explore · 1995 → 2026</p>
+  <h2>The whole story on one line</h2>
+  <div class="tl-filters" id="tlf"></div>
+  <div class="legend" id="tll"></div>
+  <div class="tl-track" id="tlt"></div>
+  <div class="tl-years" id="tly"></div>
+  <div class="tl-detail" id="tld"><p class="mute">Select a dot to read the event. Use the filters to isolate releases, business, controversy, research or labour.</p></div>
+</section>
+
+<!-- CH1 ORIGINS -->
+<section class="slide era-dma" data-chapter="1 · Origins" data-title="Dundee, 1995">
+  <p class="kicker">Chapter 1 · Origins</p>
+  <h2>It began as a game about <span class="grad">catching</span> criminals</h2>
+  <p class="lede">Development started on 4 April 1995 at DMA Design in Dundee, the studio behind <i>Lemmings</i>. The working title was <b>Race'n'Chase</b>: a top-down cops-and-robbers driving game in which the player was the police.</p>
+  <div class="row cols-3" style="margin-top:12px">
+    <div class="card"><h3>A team of beginners</h3><p>Experienced games programmers were scarce in 1990s Scotland, so DMA hired raw talent. Producer Gary Penn's arrival helped steady a struggling project.</p></div>
+    <div class="card"><h3>The least likely hit</h3><p>Of seven games DMA had in development, staff reportedly voted this one least likely to succeed. It ran about 30 months against an 18-month plan.</p></div>
+    <div class="card"><h3>Flip the role</h3><p>After months of arguments, the team switched the player to the criminal side and renamed it <i>Grand Theft Auto</i>. Freedom to misbehave became the design.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA's founding move was an inversion of perspective, not a technology. Playing the transgressor rather than the enforcer is what gave the sandbox its meaning.</span></div>
+  <p class="src">Sources: Time Extension; The Courier (Dundee); Wikipedia, Grand Theft Auto (1997).</p>
+</section>
+
+<section class="slide era-dma" data-chapter="1 · Origins" data-title="Selling outrage">
+  <p class="kicker">Chapter 1 · Origins</p>
+  <h2>Controversy as a distribution strategy</h2>
+  <p class="lede">GTA launched on PC on 28 November 1997 (published by BMG Interactive), then on PlayStation. Its publicity famously leaned on the tabloid PR operator Max Clifford, who helped turn political condemnation into front-page awareness.</p>
+  <div class="row cols-2" style="margin-top:12px">
+    <div class="card"><h3>The corporate shuffle</h3><p>Take-Two bought BMG Interactive in 1998 and founded <b>Rockstar Games</b> in New York in December 1998, with Sam and Dan Houser at the creative helm. DMA itself, sold to Gremlin then Infogrames, was bought by Take-Two in 1999.</p></div>
+    <div class="card"><h3>Early iterations</h3><p><i>GTA: London 1969</i> (1999) was the first expansion; <i>GTA 2</i> (Oct 1999) moved to a near-future "Anywhere City" with gang reputation systems, ideas that would return later.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>From day one, the moral panic was part of the product's reach. Condemnation functioned as free media, which shaped how Rockstar treated controversy for the next three decades.</span></div>
+</section>
+
+<!-- CH2 3D -->
+<section class="slide era-lc" data-chapter="2 · The 3D leap" data-title="GTA III">
+  <p class="kicker">Chapter 2 · The 3D leap · 22 Oct 2001</p>
+  <h2>GTA III: the city becomes the protagonist</h2>
+  <p class="lede">Built in Edinburgh by the renamed DMA team (it became <b>Rockstar North</b> in 2002), GTA III put a whole 3D Liberty City on the PlayStation 2. Missions were optional and the city ran its own routines whether you engaged or not.</p>
+  <div class="row cols-3" style="margin-top:12px">
+    <div class="card"><h3>Released weeks after 9/11</h3><p>Launched in a New York-inspired city weeks after the attacks, it was delayed and some content was revised before release.</p></div>
+    <div class="card"><h3>The silent protagonist</h3><p>Claude never speaks. The city, its radio and its pedestrians do the talking.</p></div>
+    <div class="card"><h3>A genre template</h3><p>"GTA clone" became industry shorthand. The structure of open map plus optional missions plus emergent chaos still underpins most open-world design.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA III's real innovation was the <i>simulated public</i>: traffic, pedestrians and police as systems that respond to the player. That is the root of "emergent" play.</span></div>
+</section>
+
+<section class="slide era-vc" data-chapter="2 · The 3D leap" data-title="Vice City & San Andreas">
+  <p class="kicker">Chapter 2 · The 3D leap · 2002–2004</p>
+  <h2>Period pieces: 1986 Miami, 1992 California</h2>
+  <div class="row cols-2">
+    <div class="card"><h3>Vice City (Oct 2002)</h3><p>A 1980s Miami pastiche drawn from <i>Scarface</i> and <i>Miami Vice</i>, with a voiced lead (Tommy Vercetti, Ray Liotta) and a licensed soundtrack across in-game radio stations. Radio became world-building: satire, ads and talk shows built a fictional America.</p></div>
+    <div class="card"><h3>San Andreas (Oct 2004)</h3><p>Three cities (Los Santos, San Fierro, Las Venturas) and countryside. Carl "CJ" Johnson's story was set in early-'90s gang culture. It added RPG systems: eating, fitness, skills, territory. It became one of the best-selling PS2 games ever.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA's America is a <b>satire machine</b>: the same systems that let you drive anywhere also deliver commentary through radio, ads and billboards. To study GTA as cultural critique, start with the radio.</span></div>
+  <p class="mute" style="margin-top:12px">Research lens: San Andreas prompted early scholarship on race and representation in games, for example David J. Leonard's work on how commercial games stage Black urban life for largely white audiences.</p>
+</section>
+
+<!-- ATLAS -->
+<section class="slide era-sa" data-chapter="Explore" data-title="Atlas of fictional America">
+  <p class="kicker">Explore · The atlas</p>
+  <h2>Three cities, endlessly remade</h2>
+  <div class="mapwrap">
+    <div>
+      <svg id="usmap" viewBox="0 0 780 530" role="img" aria-label="Tile map of US states highlighting GTA settings"></svg>
+      <p class="hint">Tile map: each square is a US state. Click a highlighted state or London.</p>
+    </div>
+    <div id="mapinfo" class="card" style="min-height:280px">
+      <h3>Pick a place</h3>
+      <p class="mute">GTA has revisited the same three American templates since 1997 (New York, Miami, Los Angeles), plus London and one unnamed city. Each return remakes the place for a new era.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH3 PANIC -->
+<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="Hot Coffee">
+  <p class="kicker">Chapter 3 · Moral panic · 2005</p>
+  <h2>Hot Coffee: the scene that wasn't meant to be found</h2>
+  <p class="lede">In 2005 modders unlocked an unfinished sex minigame left in San Andreas's code. The ESRB re-rated the game Adults Only, major retailers pulled it, and Rockstar issued a re-rated version.</p>
+  <div class="row cols-3" style="margin-top:12px">
+    <div class="card"><h3>Regulatory fallout</h3><p>In 2006 Take-Two settled with the US Federal Trade Commission over failing to disclose the content. Class actions followed.</p></div>
+    <div class="card"><h3>The campaigners</h3><p>Activist attorney Jack Thompson pursued Rockstar through lawsuits and media for years; he was disbarred in Florida in 2008.</p></div>
+    <div class="card"><h3>The legal settlement</h3><p>In <i>Brown v. Entertainment Merchants Association</i> (2011), the US Supreme Court struck down California's ban on selling violent games to minors, recognising games as protected speech.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>The ironic lesson: the scandal that hurt GTA most concerned sex, not violence, and it was triggered by players modifying code. Modding culture became a governance problem.</span></div>
+</section>
+
+<section class="slide era-panic" data-chapter="3 · Moral panic" data-title="Claim vs evidence">
+  <p class="kicker">Chapter 3 · The evidence</p>
+  <h2>Does GTA make people violent?</h2>
+  <div class="seg" id="panicSeg"><button class="on" data-k="claim">The panic claim</button><button data-k="evidence">What research found</button></div>
+  <div id="panicBody"></div>
+  <p class="src">Sources: Kühn et al. (2018) <i>Molecular Psychiatry</i>, doi:10.1038/s41380-018-0031-7; APA Resolution on Violent Video Games (2020); <i>Brown v. EMA</i>, 564 U.S. 786 (2011).</p>
+</section>
+
+<!-- CH4 PLATFORM -->
+<section class="slide era-lc" data-chapter="4 · Prestige to platform" data-title="GTA IV">
+  <p class="kicker">Chapter 4 · Prestige · 29 Apr 2008</p>
+  <h2>GTA IV: the series grows up</h2>
+  <p class="lede">A rebuilt Liberty City on the RAGE engine, with Euphoria physics and an immigrant's story (Niko Bellic) about the hollowness of the American Dream. It made about $500m in its first week.</p>
+  <div class="row cols-3" style="margin-top:12px">
+    <div class="card"><h3>Prestige framing</h3><p>Critics compared it to <i>The Wire</i> and <i>The Sopranos</i>. GTA was now discussed as culture as well as controversy.</p></div>
+    <div class="card"><h3>Expansions</h3><p><i>The Lost and Damned</i> and <i>The Ballad of Gay Tony</i> (2009) retold the same city from other lives: an early experiment in a networked narrative.</p></div>
+    <div class="card"><h3>The tension</h3><p>Some players found the realism (heavy cars, a sombre tone) less fun. That tension between "fun sandbox" and "serious drama" defines everything afterwards.</p></div>
+  </div>
+</section>
+
+<section class="slide era-ls" data-chapter="4 · Prestige to platform" data-title="GTA V">
+  <p class="kicker">Chapter 4 · 17 Sept 2013</p>
+  <h2>GTA V: the fastest entertainment product ever sold</h2>
+  <div class="row cols-3">
+    <div class="card"><div class="stat">$800m</div><p>Day-one sales. It passed $1bn in three days, setting Guinness records across entertainment.</p></div>
+    <div class="card"><div class="stat">3</div><p>Switchable protagonists (Michael, Franklin, Trevor), a structural answer to the IV-era tension between drama and chaos.</p></div>
+    <div class="card"><div class="stat">3<small> console gens</small></div><p>PS3/360 (2013), PS4/XB1 (2014), PC (2015), PS5/Series X|S (2022).</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA V's longevity was built in by design. Re-releasing one game across three hardware generations turned a single product into a 13-year revenue platform.</span></div>
+</section>
+
+<section class="slide era-ls" data-chapter="4 · Prestige to platform" data-title="GTA Online economics">
+  <p class="kicker">Chapter 4 · From product to platform</p>
+  <h2>GTA Online: the game that never ends</h2>
+  <p class="lede">Launched 1 October 2013. Revenue comes from Shark Cards (in-game currency) and, since March 2022, the GTA+ subscription. Planned story DLC for GTA V was reportedly dropped in favour of Online.</p>
+  <div class="row cols-2" style="margin-top:8px">
+    <div class="card">
+      <h3>What a 2026 leak suggested (unverified)</h3>
+      <p>In April 2026 the hacking group ShinyHunters published internal analytics. Reported figures: about $9.6m average weekly revenue for GTA Online (Sept 2025–Apr 2026), close to $500m a year, with GTA+ about a quarter of daily revenue and PC only about 3%. Rockstar did not confirm the figures.</p>
+      <svg viewBox="0 0 400 70" style="margin-top:14px;width:100%">
+        <rect x="0" y="10" width="296" height="34" rx="6" fill="var(--a)"/><rect x="296" y="10" width="104" height="34" rx="6" fill="var(--c)"/>
+        <text x="10" y="32" fill="#000" font-size="13" font-weight="600">Shark Cards ~74%</text><text x="304" y="32" fill="#000" font-size="13" font-weight="600">GTA+ ~26%</text>
+        <text x="0" y="64" fill="#a7a3b3" font-size="11">Reported revenue mix, leaked data (unverified)</text>
+      </svg>
+    </div>
+    <div class="card">
+      <h3>Roleplay: the community-built layer</h3>
+      <p>Modded roleplay servers (FiveM, NoPixel) turned GTA V into a stage for improvised drama streamed on Twitch. Rockstar acquired FiveM's maker Cfx.re in 2023, bringing a grassroots culture inside the company.</p>
+    </div>
+  </div>
+  <div class="insight"><b>Insight</b><span>The 13-year gap is largely explained by economics: when an old game earns this much, a sequel is less urgent.</span></div>
+  <p class="src">Sources: Toy People, Escapist, Game World Observer, Gaming Amigos reports on the ShinyHunters leak (Apr 2026); Digital Trends on cancelled story DLC.</p>
+</section>
+
+<section class="slide era-ls" data-chapter="4 · Prestige to platform" data-title="The widening gap">
+  <p class="kicker">Chapter 4 · Data</p>
+  <h2>Years between mainline releases</h2>
+  <div class="gaps" id="gaps"></div>
+  <div class="insight"><b>Insight</b><span>Release gaps went from 1–2 years to 13. Production scale, platform revenue and risk aversion grew together. Each GTA is now a generational event rather than a regular release.</span></div>
+</section>
+
+<!-- CH5 RESEARCH -->
+<section class="slide era-sa" data-chapter="5 · Research instrument" data-title="GTA in the lab">
+  <p class="kicker">Chapter 5 · GTA as research instrument</p>
+  <h2>A city scientists can borrow</h2>
+  <p class="lede">GTA V's detailed, rule-governed world turned it into an unexpected scientific tool. Flip each card.</p>
+  <div class="row cols-3" style="margin-top:8px">
+    <div class="flip"><div class="in"><div class="f"><h3>Training AI</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Playing for Data</b> (Richter et al., ECCV 2016) captured about 25,000 GTA V frames with pixel-level labels, showing that game-generated imagery can cut the cost of training computer-vision models.</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Self-driving cars</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Driving in the Matrix</b> (Johnson-Roberson et al., ICRA 2017) trained vehicle detectors on GTA V scenes, with results competitive with networks trained on real-world images.</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Psychology</h3><p class="hint">Tap to flip</p></div><div class="bk"><p><b>Kühn et al. (2018)</b> had adults play GTA V daily for two months and found no meaningful rise in aggression or fall in empathy compared with controls.</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Game studies</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>GTA anchors debates on <b>procedural rhetoric</b> (Bogost, <i>Persuasive Games</i>, 2007), satire, and space. See also Garrelts (ed.), <i>The Meaning and Culture of Grand Theft Auto</i> (2006).</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Representation</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>Scholars have examined race (San Andreas), gender (sex work, the absence of female leads until VI), and immigrant identity (Niko Bellic in GTA IV).</p></div></div></div>
+    <div class="flip"><div class="in"><div class="f"><h3>Media &amp; drama</h3><p class="hint">Tap to flip</p></div><div class="bk"><p>The BBC drama <i>The Gamechangers</i> (2015) dramatised Rockstar's battle with Jack Thompson; Rockstar sued the BBC over it, which shows how tightly the company controls its own story.</p></div></div></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>A game built to satirise reality became a <i>proxy</i> for reality in AI research. Synthetic worlds as training data is a GTA-era idea now central to machine learning.</span></div>
+</section>
+
+<!-- CH6 LABOUR -->
+<section class="slide era-lab" data-chapter="6 · Labour & leaks" data-title="Crunch, departures, remasters">
+  <p class="kicker">Chapter 6 · Labour, leaks &amp; power</p>
+  <h2>The human cost of the open world</h2>
+  <div class="row cols-3">
+    <div class="card"><h3>2016 · Benzies leaves</h3><p>Leslie Benzies, long-time producer and Rockstar North chief, departed and sued Take-Two over royalties. The case was later settled.</p></div>
+    <div class="card"><h3>2018 · "100-hour weeks"</h3><p>Dan Houser's remark about 100-hour weeks during <i>Red Dead Redemption 2</i> triggered industry-wide reporting on crunch culture at Rockstar.</p></div>
+    <div class="card"><h3>2020 · Dan Houser exits</h3><p>The co-founder and lead writer behind GTA's voice left Rockstar in March 2020. GTA VI is the first mainline entry without him.</p></div>
+    <div class="card"><h3>2021 · Definitive Edition</h3><p>The remastered GTA III/VC/SA trilogy (outsourced) launched with widespread bugs and backlash, a rare dent in Rockstar's reputation for polish.</p></div>
+    <div class="card"><h3>2022 · The leak</h3><p>On 18 Sept 2022, 90+ clips of early GTA VI footage leaked. A UK court later found a Lapsus$ hacker responsible; Rockstar said recovery cost about $5m.</p></div>
+    <div class="card"><h3>2026 · ShinyHunters</h3><p>A second breach (via a third-party vendor) leaked analytics, not GTA VI content. The revenue figures reportedly lifted Take-Two's share price.</p></div>
+  </div>
+</section>
+
+<section class="slide era-lab" data-chapter="6 · Labour & leaks" data-title="The union dispute">
+  <p class="kicker">Chapter 6 · 2025–2026</p>
+  <h2>The union dispute</h2>
+  <p class="lede">On 30 October 2025 Rockstar dismissed 34 staff: 31 UK-based members of the IWGB union and three in Canada. Rockstar says the dismissals were for leaking confidential information on Discord. The union says workers only talked in private, legally protected union channels.</p>
+  <div class="row cols-4" style="margin-top:10px">
+    <div class="card"><div class="stat" style="font-size:34px">Jan 2026</div><p>Glasgow preliminary hearing; interim relief (reinstatement pending trial) refused.</p></div>
+    <div class="card"><div class="stat" style="font-size:34px">May 2026</div><p>Rockstar Game Workers Union goes public.</p></div>
+    <div class="card"><div class="stat" style="font-size:34px">Jun 2026</div><p>Tribunal allows blacklisting claims to proceed to full trial.</p></div>
+    <div class="card"><div class="stat" style="font-size:34px">10 Sep–16 Oct</div><p>Final hearing in Glasgow. Check for the published judgment.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA VI launches into a labour story as well as a cultural one. The biggest game ever made is also the UK games industry's most visible organising fight.</span></div>
+  <p class="src">Sources: Game Developer; PC Gamer; Novara Media; Computer Weekly; IWGB statements.</p>
+</section>
+
+<!-- CH7 LEONIDA -->
+<section class="slide era-leo" data-chapter="7 · Leonida (GTA VI)" data-title="Welcome to Leonida">
+  <p class="kicker">Chapter 7 · Grand Theft Auto VI</p>
+  <h2>Welcome to <span class="grad">Leonida</span></h2>
+  <p class="lede">A return to Vice City within a fictional Florida: the state of Leonida. Two protagonists, Lucia Caminos and Jason Duval, run as a modern Bonnie-and-Clyde couple. Lucia is the series' first female lead in the modern 3D era.</p>
+  <div class="row cols-2" style="margin-top:8px">
+    <div class="vid" data-yt="QdBZY2fkU-0" data-href="https://www.rockstargames.com/VI"><div class="play"></div><div class="lbl">Trailer 1 · Dec 2023</div></div>
+    <div class="vid" data-yt="VQRLujxTm3c" data-href="https://www.rockstargames.com/VI"><div class="play"></div><div class="lbl">Trailer 2 · May 2025</div></div>
+  </div>
+  <p class="hint" style="margin-top:10px">Official Rockstar Games YouTube embeds (privacy-enhanced; loads on click) · <a href="https://www.rockstargames.com/VI" target="_blank" rel="noopener">rockstargames.com/VI</a></p>
+</section>
+
+<section class="slide era-leo" data-chapter="7 · Leonida (GTA VI)" data-title="The road to launch">
+  <p class="kicker">Chapter 7 · The road to 19 Nov 2026</p>
+  <h2>Hype as an industry</h2>
+  <div class="row cols-3">
+    <div class="card"><h3>Feb 2022</h3><p>Rockstar confirms the next GTA is in development.</p></div>
+    <div class="card"><h3>4 Dec 2023</h3><p>Trailer 1 releases a day early after a leak: 90.4m YouTube views in 24 hours.</p></div>
+    <div class="card"><h3>2 May 2025</h3><p>First delay: Fall 2025 → 26 May 2026.</p></div>
+    <div class="card"><h3>6 May 2025</h3><p>Trailer 2: 475m views across platforms in 24 hours, per Rockstar.</p></div>
+    <div class="card"><h3>6 Nov 2025</h3><p>Second delay to 19 Nov 2026, with a public apology.</p></div>
+    <div class="card"><h3>24 Jun 2026</h3><p>Price set: $79.99 Standard, $99.99 Ultimate. The "physical" edition is a code in a box.</p></div>
+    <div class="card"><h3>27 Aug 2026</h3><p>A 27-minute <i>Extended Look</i> premieres on Netflix, then YouTube.</p></div>
+    <div class="card"><h3>15 Oct 2026</h3><p>Launch trailer confirms the date; digital preload follows.</p></div>
+    <div class="card"><h3>Nov 2026</h3><p>Sensor Tower estimates 9.69m pre-orders (about $942m) before launch; Bank of America sets a $1.5bn first-weekend bar.</p></div>
+  </div>
+  <div class="insight"><b>Insight</b><span>GTA VI marketing treats trailers as global media events and moves through a streaming platform. Hype has its own economy, from PTO requests to analyst notes.</span></div>
+  <p class="src">Sources: GTA Boom delay history; TweakTown/Guinness; GamesRadar; Shacknews; Northeast Times; Motley Fool (10 Nov 2026); Men's Journal (17 Nov 2026); CNBC (14 Nov 2026).</p>
+</section>
+
+<section class="slide era-leo" data-chapter="7 · Leonida (GTA VI)" data-title="Launch week">
+  <p class="kicker">Chapter 7 · Launch week, as of 17 Nov 2026</p>
+  <h2>The week the world takes a day off</h2>
+  <div class="row cols-2">
+    <div class="card"><h3>Culture</h3><p>BambooHR reports leave requests for launch day about 13% higher than comparable days. Schools, employers and brands are building campaigns around the date. UK Conservative leader Kemi Badenoch said she worries more about time spent playing than about the violence.</p></div>
+    <div class="card"><h3>Market</h3><p>Take-Two's CEO says pre-orders are at "unprecedented levels". Reviews are reportedly due 18 November (embargo not officially confirmed). PS5 and Xbox Series X|S only; no PC date.</p></div>
+  </div>
+  <div class="insight"><b>Open questions to watch</b><span>Reviews · first-week sell-through vs. the $1.5bn bar · the GTA VI online offering · PC timing · the tribunal judgment · how Leonida satirises the social-media age.</span></div>
+  <p class="src">Sources: CNBC; Men's Journal/TheStreet; G2A News; Eurogamer via NewsNow. This slide reflects reporting up to 17 Nov 2026 and will date fast.</p>
+</section>
+
+<!-- INSIGHTS -->
+<section class="slide era-vc" data-chapter="Synthesis" data-title="Ten insights">
+  <p class="kicker">Synthesis</p>
+  <h2>Ten insights from thirty years</h2>
+  <div class="row cols-2" style="font-size:15px">
+    <div class="card"><p><b>1. Inversion is innovation.</b> Playing the criminal rather than the cop created the design space.</p></div>
+    <div class="card"><p><b>2. Outrage is marketing.</b> From Max Clifford to cable news, condemnation amplified reach.</p></div>
+    <div class="card"><p><b>3. The city is the star.</b> Simulated publics (traffic, pedestrians, police) are the series' true protagonist.</p></div>
+    <div class="card"><p><b>4. Satire runs on radio.</b> Ads, DJs and talk shows carry most of the cultural critique.</p></div>
+    <div class="card"><p><b>5. Panic outran evidence.</b> Long-term studies don't support the violence claims; the 2005 scandal was about sex and modding.</p></div>
+    <div class="card"><p><b>6. Product became platform.</b> GTA Online turned a 2013 game into a 13-year service.</p></div>
+    <div class="card"><p><b>7. Scarcity is strategy.</b> A 13-year gap made GTA VI a generational media event.</p></div>
+    <div class="card"><p><b>8. Fiction trains machines.</b> GTA V helped pioneer synthetic training data for AI.</p></div>
+    <div class="card"><p><b>9. Scale has a labour cost.</b> Crunch, leaks and a union fight are part of the story.</p></div>
+    <div class="card"><p><b>10. Players co-author.</b> Mods, roleplay and leaks show that the community shapes GTA as much as Rockstar.</p></div>
+  </div>
+</section>
+
+<section class="slide era-sa" data-chapter="Synthesis" data-title="Questions for teaching & research">
+  <p class="kicker">Use it</p>
+  <h2>Questions to take further</h2>
+  <div class="row cols-3">
+    <div class="card"><h3>Ethics</h3><p>What does it mean to rehearse transgression? Is GTA a moral laboratory, or does satire excuse cruelty?</p></div>
+    <div class="card"><h3>Science communication</h3><p>Why did the violent-games story persist after the evidence shifted? What does that teach us about public trust in research?</p></div>
+    <div class="card"><h3>Cities &amp; place</h3><p>How do Liberty City, Los Santos and Leonida shape how players around the world imagine America?</p></div>
+    <div class="card"><h3>AI &amp; synthetic worlds</h3><p>Once games become training data, whose world do machines learn, and with what biases built into the simulation?</p></div>
+    <div class="card"><h3>Creative economies</h3><p>Is the 13-year cycle sustainable? What does live-service income do to creative risk?</p></div>
+    <div class="card"><h3>Work &amp; power</h3><p>What would a fair production model for a $1bn+ game look like?</p></div>
+  </div>
+</section>
+
+<section class="slide era-vc" data-chapter="Synthesis" data-title="Sources & reading">
+  <p class="kicker">Sources &amp; further reading</p>
+  <h2>Go deeper</h2>
+  <ol class="refs">
+    <li>Kühn, S. et al. (2018). Does playing violent video games cause aggression? <i>Molecular Psychiatry</i>. <a href="https://doi.org/10.1038/s41380-018-0031-7" target="_blank" rel="noopener">doi</a></li>
+    <li>Richter, S. R., Vineet, V., Roth, S., Koltun, V. (2016). Playing for Data: Ground Truth from Computer Games. ECCV. <a href="https://arxiv.org/abs/1608.02192" target="_blank" rel="noopener">arXiv</a></li>
+    <li>Johnson-Roberson, M. et al. (2017). Driving in the Matrix. ICRA. <a href="https://arxiv.org/abs/1610.01983" target="_blank" rel="noopener">arXiv</a></li>
+    <li>Bogost, I. (2007). <i>Persuasive Games: The Expressive Power of Videogames</i>. MIT Press.</li>
+    <li>Garrelts, N. (ed.) (2006). <i>The Meaning and Culture of Grand Theft Auto</i>. McFarland.</li>
+    <li>Kushner, D. (2012). <i>Jacked: The Outlaw Story of Grand Theft Auto</i>. Wiley.</li>
+    <li><i>Brown v. Entertainment Merchants Association</i>, 564 U.S. 786 (2011).</li>
+    <li>APA (2020). Resolution on Violent Video Games.</li>
+    <li><a href="https://www.timeextension.com/features/the-making-of-grand-theft-auto-the-start-of-the-370-million-selling-gta-franchise" target="_blank" rel="noopener">Time Extension: The making of Grand Theft Auto</a></li>
+    <li><a href="https://filmstories.co.uk/features/the-chaotic-origins-of-grand-theft-auto/" target="_blank" rel="noopener">Film Stories: The chaotic origins of GTA</a></li>
+    <li><a href="https://www.thecourier.co.uk/fp/past-times/3919189/grand-theft-auto-dundee-25-facts/" target="_blank" rel="noopener">The Courier: GTA's Dundee roots</a></li>
+    <li><a href="https://respawn.outlookindia.com/gaming/gaming-news/gta-v-crosses-230m-sales-as-gta-vi-nears-release" target="_blank" rel="noopener">Outlook Respawn: GTA V crosses 230m</a></li>
+    <li><a href="https://www.gtaboom.com/gta-6-release-date-and-delay-history-9f6b" target="_blank" rel="noopener">GTA Boom: GTA VI release-date history</a></li>
+    <li><a href="https://www.gamedeveloper.com/production/-justice-at-last-feels-within-reach-fired-rockstar-workers-rally-in-glasgow-as-union-busting-tribunal-begins" target="_blank" rel="noopener">Game Developer: Rockstar tribunal begins</a></li>
+    <li><a href="https://www.videogameschronicle.com/news/rockstar-hackers-actually-made-take-twos-stock-increase-after-leaking-how-much-gta-online-is-making/" target="_blank" rel="noopener">VGC: ShinyHunters leak &amp; GTA Online revenue</a></li>
+    <li><a href="https://www.fool.com/investing/2026/11/10/why-take-two-stock-s-got-game-today/" target="_blank" rel="noopener">Motley Fool: Take-Two Q2 FY27 &amp; pre-orders</a></li>
+    <li><a href="https://www.cnbc.com/2026/11/14/gta-6-grand-theft-auto-launch.html" target="_blank" rel="noopener">CNBC: GTA VI's wider economic impact</a></li>
+    <li><a href="https://www.rockstargames.com/VI" target="_blank" rel="noopener">Rockstar Games: Grand Theft Auto VI (official)</a></li>
+  </ol>
+  <p class="src">Independent educational resource, not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and related marks belong to their owners. All graphics are original; video is embedded from Rockstar's official channel.</p>
+</section>
+
+</main>
+
+<nav id="bar">
+  <button id="prevB" aria-label="Previous slide">←</button>
+  <button id="nextB" aria-label="Next slide">→</button>
+  <div id="prog"><i></i></div>
+  <span id="count"></span>
+  <button id="menuB" aria-label="Open chapter menu">☰</button>
+</nav>
+<aside id="menu" aria-label="Chapter menu"></aside>
+
+<script>
+(()=>{
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+function go(i,push=true){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.toggle('prev',k<i)});
+  cur=i;
+  document.querySelector('#prog i').style.width=((i+1)/slides.length*100)+'%';
+  document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+  document.body.className=slides[i].className.split(' ').find(c=>c.startsWith('era-'))||'';
+  if(push) history.replaceState(null,'','#'+(i+1));
+  document.querySelectorAll('#menu a').forEach((a,k)=>a.classList.toggle('cur',+a.dataset.i===i));
+  onEnter(slides[i]);
+}
+// menu
+const menu=document.getElementById('menu');let last='';
+slides.forEach((s,i)=>{
+  if(s.dataset.chapter!==last){const h=document.createElement('h3');h.textContent=s.dataset.chapter;menu.appendChild(h);last=s.dataset.chapter}
+  const a=document.createElement('a');a.href='#'+(i+1);a.dataset.i=i;a.textContent=s.dataset.title;
+  a.onclick=e=>{e.preventDefault();go(i);menu.classList.remove('open')};menu.appendChild(a);
+});
+document.getElementById('menuB').onclick=()=>menu.classList.toggle('open');
+document.getElementById('prevB').onclick=()=>go(cur-1);
+document.getElementById('nextB').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+  else if(e.key.toLowerCase()==='m')menu.classList.toggle('open');
+  else if(e.key==='Escape')menu.classList.remove('open');
+});
+let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)go(cur+(dx<0?1:-1));tx=null});
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1));if(n)go(n-1,false)});
+
+// countdown (launch: midnight local, 19 Nov 2026)
+const launch=new Date(2026,10,19,0,0,0);
+function tick(){
+  const el=document.getElementById('count-down');let d=launch-new Date();
+  if(d<=0){el.innerHTML='<div><b>OUT NOW</b><span>since 19 Nov 2026</span></div>';document.getElementById('cd-label').textContent='Grand Theft Auto VI launched on Thursday 19 November 2026.';return}
+  const u=[['days',864e5],['hours',36e5],['mins',6e4],['secs',1e3]];
+  el.innerHTML=u.map(([n,ms])=>{const v=Math.floor(d/ms);d-=v*ms;return `<div><b>${String(v).padStart(2,'0')}</b><span>${n}</span></div>`}).join('');
+}
+tick();setInterval(tick,1000);
+
+// TIMELINE
+const CATS={release:['Release','#ff3d8b'],business:['Business','#ffb347'],controversy:['Controversy','#ff4545'],research:['Research','#19d3c5'],labour:['Labour & leaks','#c4b5fd']};
+const EV=[
+ [1995.26,'release','4 Apr 1995','Race\'n\'Chase begins','Development starts at DMA Design, Dundee, as a top-down cops-and-robbers driving game.'],
+ [1997.9,'release','28 Nov 1997','Grand Theft Auto','Released on PC by BMG Interactive; PlayStation follows in December. Three cities: Liberty City, San Andreas, Vice City.'],
+ [1997.95,'controversy','1997','Outrage as marketing','Publicist Max Clifford helps turn tabloid and political condemnation into publicity.'],
+ [1998.9,'business','Dec 1998','Rockstar Games founded','Take-Two, having bought BMG Interactive, founds Rockstar in New York with Sam and Dan Houser.'],
+ [1999.3,'release','1999','GTA: London 1969','The first expansion pack and the series\' only British setting.'],
+ [1999.6,'business','1999','Take-Two buys DMA Design','The Dundee studio, via Gremlin and then Infogrames, comes under Take-Two ownership.'],
+ [1999.8,'release','Oct 1999','GTA 2','Near-future "Anywhere City" with gang-respect systems.'],
+ [2001.8,'release','22 Oct 2001','GTA III','Full 3D Liberty City on PS2. Launched weeks after 9/11 with some content revised.'],
+ [2002.3,'business','2002','DMA becomes Rockstar North','The Edinburgh studio is renamed and remains the lead GTA developer.'],
+ [2002.82,'release','Oct 2002','Vice City','1986 Miami pastiche with a voiced protagonist and licensed radio.'],
+ [2004.82,'release','Oct 2004','San Andreas','Three cities, RPG systems and CJ\'s story, set in early-\'90s California and Nevada.'],
+ [2005.55,'controversy','Jul 2005','Hot Coffee','A modded, unfinished sex minigame leads the ESRB to re-rate the game AO; retailers pull it.'],
+ [2005.85,'release','2005–06','Liberty City & Vice City Stories','PSP prequels that took GTA handheld.'],
+ [2006.45,'controversy','Jun 2006','FTC settlement','Take-Two settles with the US Federal Trade Commission over Hot Coffee disclosure.'],
+ [2006.5,'research','2006','The Meaning and Culture of GTA','Garrelts\' edited collection, an early academic book on the series.'],
+ [2007.5,'research','2007','Persuasive Games','Ian Bogost\'s procedural-rhetoric framework, with GTA among its examples.'],
+ [2008.33,'release','29 Apr 2008','GTA IV','Niko Bellic, RAGE engine, about $500m in its first week.'],
+ [2008.7,'controversy','2008','Jack Thompson disbarred','The leading anti-GTA campaigner is disbarred in Florida.'],
+ [2009.2,'release','2009','Chinatown Wars & Episodes','A DS/PSP top-down return; The Lost and Damned and The Ballad of Gay Tony.'],
+ [2011.49,'controversy','Jun 2011','Brown v. EMA','The US Supreme Court strikes down California\'s violent-game sales ban 7–2.'],
+ [2012.5,'research','2012','Jacked','David Kushner\'s narrative history of Rockstar and the culture wars.'],
+ [2013.71,'release','17 Sep 2013','GTA V','$800m on day one, $1bn in three days.'],
+ [2013.75,'business','1 Oct 2013','GTA Online','Launches; becomes a decade-plus live service.'],
+ [2015.3,'release','2014–15','GTA V on PS4/XB1/PC','The first of three hardware-generation re-releases.'],
+ [2015.9,'controversy','2015','The Gamechangers','BBC drama on Rockstar vs Jack Thompson; Rockstar sues the BBC.'],
+ [2016.1,'labour','2016','Benzies departs','Long-time producer Leslie Benzies leaves and sues over royalties (later settled).'],
+ [2016.7,'research','2016','Playing for Data','GTA V used to generate labelled data for computer vision (ECCV).'],
+ [2017.4,'research','2017','Driving in the Matrix','GTA V scenes used to train vehicle detectors for autonomous driving.'],
+ [2018.2,'research','Mar 2018','Kühn et al.','Two months of daily GTA V play: no long-term effect on aggression.'],
+ [2018.8,'labour','Oct 2018','"100-hour weeks"','Dan Houser\'s comment sparks reporting on crunch at Rockstar.'],
+ [2020.2,'research','2020','APA resolution','The APA finds insufficient evidence linking violent games to violent behaviour.'],
+ [2020.19,'labour','Mar 2020','Dan Houser leaves','The co-founder and lead writer departs Rockstar.'],
+ [2021.86,'controversy','Nov 2021','Definitive Edition backlash','The remastered trilogy launches with widespread bugs.'],
+ [2022.1,'business','Feb 2022','GTA VI confirmed','Rockstar confirms the next GTA is in development.'],
+ [2022.24,'business','Mar 2022','GTA+ launches','A subscription layer for GTA Online.'],
+ [2022.71,'labour','18 Sep 2022','The GTA VI leak','90+ development clips leaked by a Lapsus$ hacker.'],
+ [2023.6,'business','Aug 2023','Rockstar acquires Cfx.re','The FiveM roleplay platform comes in-house.'],
+ [2023.92,'release','4 Dec 2023','GTA VI Trailer 1','Released early after a leak; 90.4m YouTube views in 24 hours.'],
+ [2025.33,'business','2 May 2025','First delay','GTA VI moves to 26 May 2026.'],
+ [2025.35,'release','6 May 2025','Trailer 2','475m cross-platform views in 24 hours, per Rockstar.'],
+ [2025.83,'labour','30 Oct 2025','34 dismissals','31 UK IWGB members and 3 Canadian staff dismissed; Rockstar cites leaking.'],
+ [2025.85,'business','6 Nov 2025','Second delay','GTA VI moves to 19 Nov 2026.'],
+ [2026.28,'labour','Apr 2026','ShinyHunters breach','GTA Online analytics leaked; about $500m a year implied (unverified).'],
+ [2026.47,'labour','Jun 2026','Tribunal ruling','Blacklisting claims allowed to proceed to the final hearing.'],
+ [2026.48,'business','24 Jun 2026','$80 price','$79.99 Standard / $99.99 Ultimate; pre-orders open 25 June.'],
+ [2026.65,'business','27 Aug 2026','Netflix Extended Look','A 27-minute gameplay showcase premieres on Netflix.'],
+ [2026.69,'labour','10 Sep 2026','Final hearing','Glasgow employment tribunal runs to mid-October.'],
+ [2026.79,'release','15 Oct 2026','Launch trailer','Reconfirms 19 Nov 2026.'],
+ [2026.88,'release','19 Nov 2026','GTA VI launches','PS5 and Xbox Series X|S.']
+];
+const on=new Set(Object.keys(CATS));
+const t0=1995,t1=2027.2,pct=y=>(y-t0)/(t1-t0)*100;
+const tlt=document.getElementById('tlt'),tld=document.getElementById('tld');
+const f=document.getElementById('tlf'),lg=document.getElementById('tll');
+const all=document.createElement('button');all.textContent='ALL';all.className='on';f.appendChild(all);
+Object.entries(CATS).forEach(([k,[n,c]])=>{
+  const b=document.createElement('button');b.textContent=n.toUpperCase();b.dataset.k=k;f.appendChild(b);
+  lg.insertAdjacentHTML('beforeend',`<span><i style="background:${c}"></i>${n}</span>`);
+  b.onclick=()=>{ if(all.classList.contains('on')){on.clear();all.classList.remove('on')}
+    on.has(k)?on.delete(k):on.add(k); if(!on.size)Object.keys(CATS).forEach(x=>on.add(x)),all.classList.add('on');
+    [...f.querySelectorAll('button[data-k]')].forEach(x=>x.classList.toggle('on',!all.classList.contains('on')&&on.has(x.dataset.k)));drawTL()};
+});
+all.onclick=()=>{Object.keys(CATS).forEach(x=>on.add(x));all.classList.add('on');f.querySelectorAll('button[data-k]').forEach(x=>x.classList.remove('on'));drawTL()};
+const rows={release:0,business:1,controversy:2,research:3,labour:4};
+function drawTL(){
+  tlt.innerHTML='';
+  EV.forEach((e,i)=>{ if(!on.has(e[1]))return;
+    const d=document.createElement('div');d.className='tl-dot';d.style.left=pct(e[0])+'%';
+    d.style.bottom=(-8+rows[e[1]]*20+8)+'px';d.style.background=CATS[e[1]][1];d.title=e[2]+' · '+e[3];d.tabIndex=0;
+    const show=()=>{tlt.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');
+      tld.innerHTML=`<div class="when">${e[2]} · ${CATS[e[1]][0]}</div><h3 style="font-family:var(--display);font-weight:400;font-size:34px;text-transform:uppercase;margin:6px 0">${e[3]}</h3><p>${e[4]}</p>`};
+    d.onclick=show;d.onmouseenter=show;d.onkeydown=k=>{if(k.key==='Enter')show()};tlt.appendChild(d)});
+}
+const ty=document.getElementById('tly');[1995,2000,2005,2010,2015,2020,2025].forEach(y=>ty.insertAdjacentHTML('beforeend',`<span style="left:${pct(y)}%">${y}</span>`));
+drawTL();
+
+// GAP CHART
+const GAPS=[['GTA → GTA 2',1.9],['GTA 2 → III',2.0],['III → Vice City',1.0],['VC → San Andreas',2.0],['SA → GTA IV',3.5],['IV → GTA V',5.4],['V → GTA VI',13.2]];
+const gw=document.getElementById('gaps');
+GAPS.forEach(([n,v])=>gw.insertAdjacentHTML('beforeend',`<div class="gap"><span>${n}</span><div class="barw"><div class="bar" data-w="${v/13.2*100}"></div></div><span class="v">${v} yrs</span></div>`));
+
+// PANIC TOGGLE
+const PB={
+ claim:`<div class="row cols-3"><div class="card"><h3>The intuition</h3><p>Rehearsing violence and rewarding crime must make players more aggressive, especially children.</p></div><div class="card"><h3>The evidence base</h3><p>Lab studies of short play sessions found small, immediate rises in aggressive thoughts. These were widely cited as proof of harm.</p></div><div class="card"><h3>The politics</h3><p>After shootings, politicians repeatedly named violent games, and GTA was the go-to example.</p></div></div>`,
+ evidence:`<div class="row cols-3"><div class="card"><h3>Priming, not change</h3><p>Researchers argued short-term lab effects may reflect priming (thoughts made briefly more accessible) rather than lasting change in behaviour.</p></div><div class="card"><h3>Two months of GTA V</h3><p>Kühn et al. (2018) assigned adults to daily GTA V, The Sims 3, or no game for two months and found no relevant effects on aggression, empathy or other measures, then or two months later.</p></div><div class="card"><h3>Institutions shift</h3><p>The US Supreme Court (2011) rejected the case for restricting sales. The APA's 2020 resolution found insufficient evidence linking violent games to violent behaviour.</p></div></div>
+ <div class="insight"><b>Science-communication insight</b><span>The violent-games story outlived its evidence. GTA is a textbook case of how a vivid cultural object can carry a scientific claim further than the data supports.</span></div>`
+};
+const ps=document.getElementById('panicSeg'),pb=document.getElementById('panicBody');
+ps.querySelectorAll('button').forEach(b=>b.onclick=()=>{ps.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));pb.innerHTML=PB[b.dataset.k]});
+pb.innerHTML=PB.claim;
+
+// FLIP CARDS
+document.querySelectorAll('.flip').forEach(c=>{c.tabIndex=0;c.onclick=()=>c.classList.toggle('on');c.onkeydown=e=>{if(e.key==='Enter')c.classList.toggle('on')}});
+
+// VIDEO FACADES
+document.querySelectorAll('.vid').forEach(v=>v.addEventListener('click',()=>{
+  if(v.querySelector('iframe'))return;
+  v.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.dataset.yt}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Official trailer"></iframe>`;
+}));
+
+// TILE MAP
+const T={AK:[0,0],ME:[11,0],VT:[10,1],NH:[11,1],WA:[1,2],ID:[2,2],MT:[3,2],ND:[4,2],MN:[5,2],IL:[6,2],WI:[7,2],MI:[8,2],NY:[9,2],RI:[10,2],MA:[11,2],
+OR:[1,3],NV:[2,3],WY:[3,3],SD:[4,3],IA:[5,3],IN:[6,3],OH:[7,3],PA:[8,3],NJ:[9,3],CT:[10,3],CA:[1,4],UT:[2,4],CO:[3,4],NE:[4,4],MO:[5,4],KY:[6,4],WV:[7,4],VA:[8,4],MD:[9,4],DE:[10,4],
+AZ:[2,5],NM:[3,5],KS:[4,5],AR:[5,5],TN:[6,5],NC:[7,5],SC:[8,5],DC:[9,5],OK:[4,6],LA:[5,6],MS:[6,6],AL:[7,6],GA:[8,6],HI:[1,7],TX:[4,7],FL:[9,7]};
+const HOT={
+ NY:['#ffd23f','Liberty City','New York','GTA (1997) · GTA III (2001) · Liberty City Stories (2005) · GTA IV (2008) · Chinatown Wars (2009)','The series\' most revisited city. GTA III\'s version was a gritty composite; GTA IV\'s was a meticulous, sombre portrait of immigrant New York.'],
+ FL:['#ff3d8b','Vice City → Leonida','Miami & Florida','GTA (1997) · Vice City (2002) · Vice City Stories (2006) · GTA VI (2026)','Neon 1980s excess in 2002; social-media-age Florida in 2026. GTA VI widens the frame from one city to a whole state, Leonida.'],
+ CA:['#7bd389','Los Santos & San Fierro','Los Angeles & San Francisco','GTA (1997, as "San Andreas" city) · San Andreas (2004) · GTA V (2013)','Hollywood, gangs, wealth and wellness culture. GTA V\'s Los Santos was a satire of LA in the age of tech and celebrity.'],
+ NV:['#f2c14e','Las Venturas','Las Vegas','San Andreas (2004)','The casino city of San Andreas. Its heist and casino ideas returned in GTA Online\'s Diamond Casino updates.']
+};
+const svg=document.getElementById('usmap'),S=56,G=6,ox=30,oy=20;
+let h='';
+Object.entries(T).forEach(([k,[c,r]])=>{const hot=HOT[k];const x=ox+c*(S+G),y=oy+r*(S+G);
+ h+=`<g data-k="${k}"><rect class="st${hot?' hot':''}" x="${x}" y="${y}" width="${S}" height="${S}" rx="8" ${hot?`style="fill:${hot[0]};fill-opacity:.9;stroke:${hot[0]}"`:''}/><text x="${x+S/2}" y="${y+S/2+4}" text-anchor="middle" font-size="12" fill="${hot?'#000':'#777'}" font-weight="${hot?700:400}" pointer-events="none">${k}</text></g>`});
+// London inset
+h+=`<g data-k="LDN"><rect class="st hot" x="${ox+11*(S+G)-20}" y="${oy+5.6*(S+G)}" width="${S+20}" height="${S}" rx="8" style="fill:#c4b5fd;fill-opacity:.9;stroke:#c4b5fd"/><text x="${ox+11*(S+G)+S/2-10}" y="${oy+5.6*(S+G)+S/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#000" pointer-events="none">LONDON</text></g>`;
+h+=`<text x="${ox+11*(S+G)+S/2-10}" y="${oy+5.6*(S+G)-8}" text-anchor="middle" font-size="10" fill="#a7a3b3">UK inset</text>`;
+svg.innerHTML=h;
+HOT.LDN=['#c4b5fd','London','London, UK','GTA: London 1969 (1999) · London 1961 (PC freebie)','The only non-American setting: a swinging-sixties pastiche of British gangster films, made by a Scottish studio. GTA 2\'s unnamed "Anywhere City" is the other exception.'];
+const mi=document.getElementById('mapinfo');
+svg.querySelectorAll('g').forEach(g=>{const k=g.dataset.k;if(!HOT[k])return;g.style.cursor='pointer';g.onclick=()=>{
+  svg.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));g.querySelector('rect').classList.add('sel');
+  const [c,n,real,games,txt]=HOT[k];
+  mi.innerHTML=`<p class="kicker" style="color:${c}">${real}</p><h3 style="font-family:var(--display);font-weight:400;font-size:40px;text-transform:uppercase;margin:0 0 10px">${n}</h3><p style="margin-bottom:12px">${txt}</p><p class="mute" style="font-size:13px">${games}</p>`}});
+
+// on-enter animations
+function onEnter(s){ s.querySelectorAll('.bar').forEach(b=>{b.style.width='0';requestAnimationFrame(()=>setTimeout(()=>b.style.width=b.dataset.w+'%',60))}) }
+
+const n=parseInt(location.hash.slice(1));go(n?n-1:0,false);
+})();
+</script>
+</body>
+</html>
