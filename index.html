@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wasted, Busted, Remade — An Insight Deck on Grand Theft Auto, 1995–2026</title>
+<title>Inside GTA — An Interactive Insight Deck on Grand Theft Auto, 1995–2026</title>
 <meta name="description" content="An interactive insight deck on the history of Grand Theft Auto: from Race'n'Chase in Dundee to the launch of GTA VI. Timelines, data, controversies, research and labour.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@ a{color:var(--c)}
 .era-leo{--a:#ff5fa2;--b:#ff9f43;--c:#2ee6d6}
 
 #deck{position:fixed;inset:0}
-.slide{position:absolute;inset:0;padding:clamp(20px,5vw,72px) clamp(20px,6vw,96px) 96px;display:flex;flex-direction:column;justify-content:center;
+.slide{position:absolute;inset:0;padding:clamp(20px,5vw,72px) clamp(20px,6vw,96px) 96px;display:flex;flex-direction:column;justify-content:flex-start;
   opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity .45s ease, transform .45s ease;overflow-y:auto;
   background:radial-gradient(1200px 600px at 85% -10%, color-mix(in srgb,var(--a) 22%, transparent), transparent 60%),
              radial-gradient(900px 500px at -10% 110%, color-mix(in srgb,var(--c) 18%, transparent), transparent 60%), var(--bg)}
@@ -60,6 +60,18 @@ p{font-size:clamp(15px,1.35vw,19px);line-height:1.55;max-width:70ch;color:#e6e2d
 .src{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:16px}
 .src a{color:var(--mute)}
 
+.slide>:first-child{margin-top:auto}.slide>:last-child{margin-bottom:auto}
+/* hero */
+.hero{overflow:hidden}
+.hero .bgv{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#000 center/cover no-repeat}
+.hero .bgv iframe{position:absolute;top:50%;left:50%;width:max(100vw,177.78vh);height:max(56.25vw,100vh);transform:translate(-50%,-50%) scale(1.15);border:0;opacity:.55}
+.hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,8,12,.95) 0%,rgba(8,8,12,.75) 45%,rgba(8,8,12,.25) 100%),linear-gradient(0deg,rgba(8,8,12,.9),transparent 40%)}
+.hero>*:not(.bgv):not(.shade):not(.credit){position:relative;z-index:2}
+.hero .core{font-family:var(--display);font-size:clamp(70px,14vw,210px);line-height:.85;margin:0 0 10px;text-transform:uppercase}
+.hero .core small{display:block;font-size:.32em;letter-spacing:.04em;color:var(--b)}
+.hero .sub{font-family:var(--display);font-size:clamp(26px,3.6vw,52px);text-transform:uppercase;line-height:1;margin:0 0 18px}
+.hero .credit{position:absolute;right:24px;bottom:78px;z-index:2;font:11px var(--mono);color:rgba(255,255,255,.55)}
+.hero .bgtoggle{background:rgba(0,0,0,.5);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:4px 8px;font:11px var(--mono);cursor:pointer;margin-left:8px}
 /* chrome */
 #bar{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;
   background:linear-gradient(transparent,rgba(0,0,0,.7) 40%)}
@@ -131,6 +143,36 @@ ol.refs{columns:2;column-gap:40px;font-size:13px;line-height:1.5;padding-left:18
 @media(max-width:900px){ol.refs{columns:1}}
 ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
 .noscroll-hint{position:fixed;top:14px;right:18px;font:11px var(--mono);color:var(--mute);z-index:5}
+
+/* gameplay archive */
+.gp-filters{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
+.gp-filters button{font:600 12px var(--mono);letter-spacing:.06em;padding:7px 12px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--mute);cursor:pointer}
+.gp-filters button.on{color:#000;background:var(--ink)}
+.gp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.gp{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;text-align:left;color:var(--ink);padding:0;font:inherit;transition:transform .15s,border-color .15s}
+.gp:hover,.gp:focus-visible{transform:translateY(-3px);border-color:var(--a);outline:none}
+.gp .th{position:relative;aspect-ratio:16/9;background:#222 center/cover no-repeat}
+.gp .th:after{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;background:linear-gradient(transparent 40%,rgba(0,0,0,.55));opacity:.85}
+.gp .yr{position:absolute;left:8px;top:8px;font:600 11px var(--mono);background:rgba(0,0,0,.7);padding:3px 7px;border-radius:6px;z-index:1}
+.gp .meta{padding:10px 12px 12px}
+.gp .meta b{display:block;font-size:14px;line-height:1.25}
+.gp .meta span{font:11px var(--mono);color:var(--mute)}
+#player{position:fixed;inset:0;z-index:30;background:rgba(5,5,8,.92);display:none;align-items:center;justify-content:center;padding:20px}
+#player.open{display:flex}
+#player .box{width:min(1100px,100%)}
+#player .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px}
+#player h3{font-family:var(--display);font-weight:400;font-size:clamp(26px,3vw,40px);text-transform:uppercase;margin:0}
+#player .x{background:rgba(255,255,255,.1);border:1px solid var(--line);color:var(--ink);border-radius:10px;height:40px;min-width:40px;font-size:18px;cursor:pointer}
+#player .frame{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
+#player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#player .note{font-size:14px;color:#ddd;margin:12px 0 0;max-width:none}
+#player .cred{font:11px var(--mono);color:var(--mute);margin-top:6px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:900px){.cmp{grid-template-columns:1fr}}
+.cmp select{width:100%;background:#16161d;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:600 14px var(--body);margin-bottom:10px}
+.cmp .frame{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.cmp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cmp .cap{font:12px var(--mono);color:var(--mute);margin-top:8px}
 </style>
 </head>
 <body>
@@ -138,12 +180,16 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
 <main id="deck">
 
 <!-- 0 TITLE -->
-<section class="slide era-vc" data-chapter="Start" data-title="Title">
-  <p class="kicker">An insight deck · 1995 → 2026</p>
-  <h1><span class="grad">Wasted.</span><br>Busted.<br>Remade.</h1>
+<section class="slide era-vc hero" data-chapter="Start" data-title="Inside GTA">
+  <div class="bgv" id="heroBg" style="background-image:url(https://i.ytimg.com/vi/rz1B4B2yBZY/maxresdefault.jpg)"></div>
+  <div class="shade"></div>
+  <p class="kicker">An interactive insight deck · 1995 → 2026</p>
+  <h1 class="core"><small>Inside</small><span class="grad">GTA</span></h1>
+  <p class="sub">Wasted. Busted. Remade.</p>
   <p class="lede">How a failed police-chase prototype in Dundee became the defining entertainment franchise of the 21st century, and what it tells us about play, cities, moral panic, platforms and labour.</p>
   <div id="count-down" aria-live="polite"></div>
   <p class="mute" id="cd-label" style="margin-top:8px">until Grand Theft Auto VI launches, Thursday 19 November 2026</p>
+  <div class="credit">Background: <i>Grand Theft Auto VI</i> launch trailer · Rockstar Games (YouTube)<button class="bgtoggle" id="bgT">pause</button></div>
 </section>
 
 <!-- 1 BIG NUMBERS -->
@@ -172,7 +218,7 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
     <div class="card"><h3>5 · GTA as research instrument</h3><p>From game studies to training data for self-driving cars.</p></div>
     <div class="card"><h3>6 · Labour, leaks &amp; power</h3><p>Crunch, hacks, and the 2025–26 union dispute.</p></div>
     <div class="card"><h3>7 · Leonida (GTA VI)</h3><p>Delays, trailers, $80, and the launch week.</p></div>
-    <div class="card"><h3>+ Interactive timeline &amp; atlas</h3><p>Filter 50+ events; explore where every game is set.</p></div>
+    <div class="card"><h3>+ Timeline, atlas &amp; gameplay archive</h3><p>Filter 49 events, explore every setting, and watch gameplay from all 16 editions.</p></div>
     <div class="card"><h3>+ Ten insights &amp; reading list</h3><p>Takeaways and sources for teaching, talks and research.</p></div>
   </div>
   <p class="mute" style="margin-top:16px">Use ← → or swipe. Press <b>M</b> or the ☰ button for the chapter menu. Every slide has its own link.</p>
@@ -413,6 +459,28 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
   <p class="src">Sources: CNBC; Men's Journal/TheStreet; G2A News; Eurogamer via NewsNow. This slide reflects reporting up to 17 Nov 2026 and will date fast.</p>
 </section>
 
+
+<!-- WATCH: GAMEPLAY ARCHIVE -->
+<section class="slide era-vc" data-chapter="Watch" data-title="Gameplay archive: every edition">
+  <p class="kicker">Watch · 1997 → 2026</p>
+  <h2>Gameplay from every edition</h2>
+  <p>Sixteen editions, from the top-down original to Leonida. Where Rockstar has published official gameplay or a trailer, you can switch to it; otherwise the video is archival footage captured by players. Click a card to play.</p>
+  <div class="gp-filters" id="gpf"></div>
+  <div class="gp-grid" id="gpg"></div>
+  <p class="src">Videos are embedded from YouTube (privacy-enhanced mode). Each player credits its channel. Gameplay captures belong to their uploaders; official videos © Rockstar Games.</p>
+</section>
+
+<section class="slide era-vc" data-chapter="Watch" data-title="Side by side: thirty years of play">
+  <p class="kicker">Watch · Compare</p>
+  <h2>Side by side</h2>
+  <p>Pick any two editions and play them together to see the series' technical and cultural shifts: top-down to 3D, silent to voiced, one city to a whole state.</p>
+  <div class="cmp">
+    <div><select id="cmpA" aria-label="Left video"></select><div class="frame" id="cmpFA"></div><div class="cap" id="cmpCA"></div></div>
+    <div><select id="cmpB" aria-label="Right video"></select><div class="frame" id="cmpFB"></div><div class="cap" id="cmpCB"></div></div>
+  </div>
+  <p class="hint" style="margin-top:12px">Tip: start with GTA (1997) vs the GTA VI launch trailer.</p>
+</section>
+
 <!-- INSIGHTS -->
 <section class="slide era-vc" data-chapter="Synthesis" data-title="Ten insights">
   <p class="kicker">Synthesis</p>
@@ -471,6 +539,7 @@ ol.refs li{margin-bottom:6px;break-inside:avoid;color:#d8d4cc}
 </section>
 
 </main>
+<div id="player" role="dialog" aria-modal="true" aria-label="Video player"><div class="box"><div class="top"><div><p class="kicker" id="plK"></p><h3 id="plT"></h3></div><button class="x" id="plX" aria-label="Close">✕</button></div><div class="seg" id="plSeg" style="margin-bottom:10px"></div><div class="frame" id="plF"></div><p class="note" id="plN"></p><p class="cred" id="plC"></p></div></div>
 
 <nav id="bar">
   <button id="prevB" aria-label="Previous slide">←</button>
@@ -507,6 +576,7 @@ document.getElementById('menuB').onclick=()=>menu.classList.toggle('open');
 document.getElementById('prevB').onclick=()=>go(cur-1);
 document.getElementById('nextB').onclick=()=>go(cur+1);
 addEventListener('keydown',e=>{
+  if(document.getElementById('player').classList.contains('open')||['SELECT','INPUT','TEXTAREA'].includes(e.target.tagName))return;
   if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
   else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
   else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
@@ -627,7 +697,7 @@ document.querySelectorAll('.flip').forEach(c=>{c.tabIndex=0;c.onclick=()=>c.clas
 // VIDEO FACADES
 document.querySelectorAll('.vid').forEach(v=>v.addEventListener('click',()=>{
   if(v.querySelector('iframe'))return;
-  v.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.dataset.yt}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Official trailer"></iframe>`;
+  v.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${v.dataset.yt}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Official trailer" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 }));
 
 // TILE MAP
@@ -655,8 +725,72 @@ svg.querySelectorAll('g').forEach(g=>{const k=g.dataset.k;if(!HOT[k])return;g.st
   const [c,n,real,games,txt]=HOT[k];
   mi.innerHTML=`<p class="kicker" style="color:${c}">${real}</p><h3 style="font-family:var(--display);font-weight:400;font-size:40px;text-transform:uppercase;margin:0 0 10px">${n}</h3><p style="margin-bottom:12px">${txt}</p><p class="mute" style="font-size:13px">${games}</p>`}});
 
+
+// GAMEPLAY ARCHIVE
+const GP=[
+ {t:'Grand Theft Auto',y:1997,p:'PC / PS1',era:'topdown',n:'Top-down chaos across Liberty City, San Andreas and Vice City. Note the police AI and the radio, already present.',v:[['Gameplay','ahOIJNLLtkI','iPhantom3D']]},
+ {t:'GTA: London 1969',y:1999,p:'PC / PS1',era:'topdown',n:'The only British setting: swinging-sixties London with left-hand traffic and Cockney slang.',v:[['Gameplay','gaaziV3SMd4','10min Gameplay']]},
+ {t:'Grand Theft Auto 2',y:1999,p:'PC / PS1 / Dreamcast',era:'topdown',n:'Anywhere City, a retro-future. Gang respect meters decide who will hire you or shoot you.',v:[['Gameplay','RrKhHGRcoNo','Nostalgic Games']]},
+ {t:'Grand Theft Auto III',y:2001,p:'PS2',era:'3d',n:'The leap to 3D. Liberty City runs on its own: traffic, pedestrians and police as systems.',v:[['Gameplay','6RoGaopswUA','GamePlayStation'],['Official trailer','0VxoWT0MyLE','Rockstar Games']]},
+ {t:'GTA: Vice City',y:2002,p:'PS2',era:'3d',n:'1986 Miami: a voiced lead, property empire and the radio stations that defined the series\' satire.',v:[['Gameplay','MEWh7fGgu1I','GamePlayStation'],['Original trailer','IlZZDQIYRyg','GTA Series Videos (archive)']]},
+ {t:'GTA: San Andreas',y:2004,p:'PS2',era:'3d',n:'A whole state, RPG systems (fitness, skills, territory) and CJ\'s story in 1992 Los Santos.',v:[['Gameplay','vtqqbbaEzkU','GamePlayStation'],['Official intro','daw8xhaGj2s','Rockstar Games']]},
+ {t:'GTA Advance',y:2004,p:'Game Boy Advance',era:'handheld',n:'A top-down prequel to GTA III on a handheld, developed by Digital Eclipse.',v:[['Gameplay','C_x97p469xI','BLG']]},
+ {t:'GTA: Liberty City Stories',y:2005,p:'PSP / PS2',era:'handheld',n:'GTA III\'s city brought to a handheld: full 3D in your pocket.',v:[['Gameplay','Kk3yJtgArMs','John GodGames']]},
+ {t:'GTA: Vice City Stories',y:2006,p:'PSP / PS2',era:'handheld',n:'A 1984 prequel with empire-building across Vice City.',v:[['Gameplay','qY7pOw1NJ5g','John GodGames']]},
+ {t:'Grand Theft Auto IV',y:2008,p:'PS3 / Xbox 360 / PC',era:'hd',n:'RAGE engine and Euphoria physics: a heavier, more realistic Liberty City and Niko Bellic\'s immigrant story.',v:[['Gameplay','CT5AfGLtwHY','softairpyro'],['Official trailer','M80K51DosFo','Rockstar Games']]},
+ {t:'Episodes from Liberty City',y:2009,p:'Xbox 360 / PS3 / PC',era:'hd',n:'The Lost and Damned and The Ballad of Gay Tony: the same city from two other lives.',v:[['Official trailer','fcDY7SCLWcc','Rockstar Games']]},
+ {t:'GTA: Chinatown Wars',y:2009,p:'DS / PSP / iOS',era:'handheld',n:'A cel-shaded top-down return with touchscreen minigames and a drug-dealing economy.',v:[['Gameplay','HxkUlvluJC4','ChronoCache'],['Official trailer','jC0HbaLblcs','Rockstar Games']]},
+ {t:'Grand Theft Auto V',y:2013,p:'PS3 → PS5, Xbox, PC',era:'hd',n:'Three switchable protagonists, heists, and Los Santos as a satire of LA.',v:[['Official gameplay','N-xHcvug3WI','Rockstar Games']]},
+ {t:'GTA Online',y:2013,p:'PS3 → PS5, Xbox, PC',era:'hd',n:'The live service that kept GTA V earning for 13 years.',v:[['Official gameplay','olEGtoYs_8A','Rockstar Games']]},
+ {t:'The Trilogy – Definitive Edition',y:2021,p:'Multi-platform',era:'hd',n:'Remasters of III, Vice City and San Andreas, launched to widespread criticism of bugs and art changes.',v:[['Official trailer','D71cBUeAL58','Rockstar Games'],['Gameplay','5JBhBcW3Cxw','Throneful']]},
+ {t:'Grand Theft Auto VI',y:2026,p:'PS5 / Xbox Series X|S',era:'leonida',n:'Leonida: Lucia and Jason, Vice City and beyond. The 27-minute Extended Look is the most detailed official gameplay so far (age-restricted, so it opens on YouTube).',v:[['Launch trailer','rz1B4B2yBZY','Rockstar Games'],['Extended Look (gameplay)','tJbzMqJGH4k','Rockstar Games','ext'],['Trailer 1','QdBZY2fkU-0','Rockstar Games'],['Trailer 2','VQRLujxTm3c','Rockstar Games']]}
+];
+const ERAS={all:'All',topdown:'Top-down era',['3d']:'3D era',handheld:'Handheld',hd:'HD era',leonida:'GTA VI'};
+const yt=(id,ap)=>`<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0${ap?'&autoplay=1':''}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="YouTube video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+const extCard=id=>`<a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#000 url(https://i.ytimg.com/vi/${id}/hqdefault.jpg) center/cover;color:#fff;text-decoration:none"><span style="background:rgba(0,0,0,.75);padding:14px 20px;border-radius:12px;font:600 15px var(--body)">Age-restricted by YouTube · Watch on YouTube ↗</span></a>`;
+const gpg=document.getElementById('gpg'),gpf=document.getElementById('gpf');
+let gpEra='all';
+function drawGP(){gpg.innerHTML='';GP.forEach((g,i)=>{if(gpEra!=='all'&&g.era!==gpEra)return;
+  const b=document.createElement('button');b.className='gp';b.setAttribute('aria-label','Play '+g.t);
+  b.innerHTML=`<div class="th" style="background-image:url(https://i.ytimg.com/vi/${g.v[0][1]}/hqdefault.jpg)"><span class="yr">${g.y}</span></div><div class="meta"><b>${g.t}</b><span>${g.p} · ${g.v.length} video${g.v.length>1?'s':''}</span></div>`;
+  b.onclick=()=>openPlayer(i);gpg.appendChild(b)})}
+Object.entries(ERAS).forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n.toUpperCase();if(k==='all')b.className='on';
+  b.onclick=()=>{gpEra=k;gpf.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));drawGP()};gpf.appendChild(b)});
+drawGP();
+const pl=document.getElementById('player');
+function openPlayer(i){const g=GP[i];
+  document.getElementById('plK').textContent=g.y+' · '+g.p;document.getElementById('plT').textContent=g.t;document.getElementById('plN').textContent=g.n;
+  const seg=document.getElementById('plSeg');seg.innerHTML='';seg.style.display=g.v.length>1?'inline-flex':'none';
+  const show=k=>{document.getElementById('plF').innerHTML=g.v[k][3]==='ext'?extCard(g.v[k][1]):yt(g.v[k][1],true);document.getElementById('plC').textContent='Video: '+g.v[k][2]+' · YouTube';
+    seg.querySelectorAll('button').forEach((x,j)=>x.classList.toggle('on',j===k))};
+  g.v.forEach((v,k)=>{const b=document.createElement('button');b.textContent=v[0];b.onclick=()=>show(k);seg.appendChild(b)});
+  show(0);pl.classList.add('open');document.getElementById('plX').focus()}
+function closePlayer(){pl.classList.remove('open');document.getElementById('plF').innerHTML=''}
+document.getElementById('plX').onclick=closePlayer;
+pl.addEventListener('click',e=>{if(e.target===pl)closePlayer()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&pl.classList.contains('open'))closePlayer()},true);
+
+// COMPARE
+const opts=[];GP.forEach(g=>g.v.forEach(v=>v[3]!=='ext'&&opts.push({l:`${g.y} · ${g.t} — ${v[0]}`,id:v[1],c:v[2]})));
+['A','B'].forEach((s,si)=>{const sel=document.getElementById('cmp'+s);
+  opts.forEach((o,k)=>sel.insertAdjacentHTML('beforeend',`<option value="${k}">${o.l}</option>`));
+  sel.value=si===0?0:opts.findIndex(o=>o.id==='rz1B4B2yBZY');
+  const load=()=>{const o=opts[sel.value];document.getElementById('cmpF'+s).innerHTML=yt(o.id,false);document.getElementById('cmpC'+s).textContent='Video: '+o.c};
+  sel.onchange=load;sel.dataset.load='1';sel._load=load});
+let cmpLoaded=false;
+
+
+// HERO BACKGROUND (muted official gameplay loop)
+(function(){const bg=document.getElementById('heroBg'),t=document.getElementById('bgT');
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;let on=false;
+ const play=()=>{bg.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/rz1B4B2yBZY?autoplay=1&mute=1&loop=1&playlist=rz1B4B2yBZY&controls=0&start=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1" allow="autoplay; encrypted-media" title="Background gameplay" tabindex="-1" aria-hidden="true" referrerpolicy="strict-origin-when-cross-origin"></iframe>';on=true;t.textContent='pause'};
+ const stop=()=>{bg.innerHTML='';on=false;t.textContent='play'};
+ t.onclick=e=>{e.stopPropagation();on?stop():play()};
+ reduce?stop():play();})();
+
 // on-enter animations
-function onEnter(s){ s.querySelectorAll('.bar').forEach(b=>{b.style.width='0';requestAnimationFrame(()=>setTimeout(()=>b.style.width=b.dataset.w+'%',60))}) }
+function onEnter(s){ if(!cmpLoaded&&s.querySelector('.cmp')){cmpLoaded=true;['A','B'].forEach(x=>document.getElementById('cmp'+x)._load())}
+  s.querySelectorAll('.bar').forEach(b=>{b.style.width='0';requestAnimationFrame(()=>setTimeout(()=>b.style.width=b.dataset.w+'%',60))}) }
 
 const n=parseInt(location.hash.slice(1));go(n?n-1:0,false);
 })();
